@@ -1,0 +1,29 @@
+caption {
+    display: table-caption;
+    text-align: center;
+font-style: italic;
+font-size: 250%;
+color: maroon;
+font-weight: bold;
+text-shadow: 2px 2px gold;
+}
+
+table, td {
+   border: 10px solid maroon;
+}
+ td {
+padding: 10px;
+background-color: gold;
+}
+
+table {
+width: 100%;
+height: 100%;
+}
+
+tr:first-child {
+ font-weight: bolder;
+ text-align: center;
+   text-decoration: underline;
+font-size: 110%;
+ }
