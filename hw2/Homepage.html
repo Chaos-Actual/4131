@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title> Mark's Favorite Places </title>
+  <link rel="stylesheet" type="text/css" href="Lab1.css">
+  <meta charset = "utf-8"/>
+</head>
+
+<body>
+
+  <nav>
+    <a href="Homepage.html" style="text-align:left;"> Home </a> |
+    <a href="Page1.html" style="text-align:right;"> Page 1 </a>
+  </nav>
+
+  <table>
+    <caption> My Favorite Places </caption>
+    <tr>
+      <td> Name </td>
+      <td> Address </td>
+      <td> Hours </td>
+      <td> Information </td>
+    </tr>
+    <tr>
+      <td id = "Lake"> Lake of the Isles </td>
+      <td> 2500 Lake of the Isles Parkway E Minneapolis, MN 55405 </td>
+      <td> 6 am-midnight in developed areas <br />6 am-10 pm in undeveloped areas </td>
+      <td> <a href = "https://www.minneapolisparks.org/parks__destinations/parks__lakes/lake_of_the_isles_park/" > Park Info </a> </td>
+    </tr>
+    <tr>
+      <td id = "Mama"> Mama G's </td>
+      <td> 9705 County Rd 101, Maple Grove, MN 55311 </td>
+      <td> 11:00 AM – 2:00 AM </td>
+      <td> <a href = "http://mamags.com" > Bar Info </a> </td>
+    </tr>
+    <tr>
+      <td id = "Sva"> UMN SVA </td>
+      <td> Johnston Hall Room: B18 <br />101 Pleasant St SE, Minneapolis, MN 55455 </td>
+      <td> 8:00 AM – 5:00 PM </td>
+      <td> <a href = "https://gopherlink.umn.edu/organization/1474" > SVA Info </a> </td>
+    </tr>
+    <tr>
+      <td id = "Spyhouse"> Spyhouse Coffee </td>
+      <td> 945 Broadway St NE Minneapolis MN 55413 </td>
+      <td> 8:00 AM – 11:00 PM </td>
+      <td> <a href = "https://spyhousecoffee.com/pages/northeast" > Spyhouse Info </a> </td>
+    </tr>
+  </table>
+
+<img src ="gophers-mascot.png" id="Gophersp">
+<img src ="Mama.jpg" id = "Mamap">
+<img src = "Spyhouse.jpg"  id = "Spyhousep">
+<img src = "sva.png" id = "Svap">
+<img src = "lake.jpg" id = "Lakep">
+
+  <p> This table was tested on the Chrome and Firefox browsers. </p>
+
+</body>
+</html>
+
+
+
+<script>
+function myFunction() {
+    var Lake = document.getElementById("Lakep");
+    if (Lake.style.display === "none") {
+        Lake.style.display = "block";
+    } else {
+        Lake.style.display = "none";
+    }
+}
+</script>
