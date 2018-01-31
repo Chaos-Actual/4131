@@ -17,7 +17,6 @@ div {
       display: none;
 }
 
-
 table, td {
    border: 10px solid maroon;
 }
@@ -38,37 +37,18 @@ tr:first-child {
 font-size: 110%;
  }
 
-#Lake:hover {
-display : block;
-background-color: blue;
-}
-#Lakep {
-display:none;
-}
+ #Lakep {
+ display:none;
+ }
 
-#Mama:hover {
-display : block;
-background-color: blue;
-}
+ #Mamap {
+ display:none;
+ }
 
-#Mamap {
-display:none;
-}
+ #Spyhousep {
+ display:none;
+ }
 
-#Spyhouse:hover {
-display : block;
-background-color: blue;
-}
-
-#Spyhousep {
-display:none;
-}
-
-#Sva:hover {
-display : block;
-background-color: blue;
-}
-
-#Svap {
-display:none;
-}
+ #Svap {
+ display:none;
+ }
