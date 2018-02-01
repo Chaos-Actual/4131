@@ -2,69 +2,32 @@
 <html>
 <head>
   <title> Mark's Favorite Places </title>
-  <link rel="stylesheet" type="text/css" href="Lab1.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
   <meta charset = "utf-8"/>
 </head>
 
 <body>
+  <h1>Places Form </h1>
   <nav>
-    <a href="Homepage.html" style="text-align:left;"> Home </a> |
-    <a href="Page1.html" style="text-align:right;"> Page 1 </a>
+    <a id = "Homepage" href="Homepage.html"> My Places </a>
+    <a id = "Form_input" href="Page1.html" > Form Input </a>
   </nav>
-  <p> This table was tested on the Chrome and Firefox browsers. </p>
 
+  <form id = "Place_From"method = "GET" action ="http://www-users.cselabs.umn.edu/~tulaj001/form_handler.php">
+    <label>Name of the place:</label>
+    <input type="text" name="Place Name" required><br>
+    <label>Addressline1:</label>
+    <input type="text" name="addressline1" required><br>
+    <label>Addressline2:</label>
+    <input type="text" name="addressline2" ><br>
+   <label> Opentime:</label>
+    <input type="time" name="opentime" required><br>
+   <label> Closetime:</label>
+    <input type="time" name="closetime" required><br>
+   <label> Additionalinfo:</label>
+    <input type="url" name="Additional Info" ><br>
+    <button type = "submit" id = "btn-s"> Submit</button>
+  </form>
+  <p> This table was tested on the Chrome and Firefox browsers. </p>
 </body>
 </html>
-
-
-<p id="demo" onclick="myFunction()">Click me.</p>
-
-<script>
-function myFunction() {
-    document.getElementById("demo").innerHTML = "YOU CLICKED ME!";
-}
-</script>
-
-
-<script>
-function Lake_Function( x ) {
-  var Lake = document.getElementById("Lakep");
-  var Mama = document.getElementById("Mamap");
-  var Sva = document.getElementById("Svap");
-  var Spyhouse = document.getElementById("Spyhousep");
-  var goldy = document.getElementById("Gophersp");
-  goldy.style.display = "none";
-  Lake.style.display = "none";
-  Mama.style.display = "none";
-  Sva.style.display = "none";
-  Spyhouse.style.display = "none";
-    switch (x) {
-      case "1":
-        Lake.style.display = "block";
-      break;
-
-      case 2:
-        Mama.style.display = "block";
-      break;
-
-      case 3:
-        Sva.style.display = "block";
-      break;
-
-      case 4:
-        Spyhouse.style.display = "block";
-      break;
-      default:
-        goldy.style.display = "block";
-    }
-    var Lake = document.getElementById("Lakep");
-    var goldy = document.getElementById("Gophersp")
-    if (Lake.style.display === "none") {
-        Lake.style.display = "block";
-        goldy.style.display = "none";
-    } else{
-        Lake.style.display = "none";
-        goldy.style.display = "block";
-      }
-}
-</script>
