@@ -1,48 +1,32 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-  <title> Mark's Favorite Places </title>
+   <title> Forms Page </title>
   <link rel="stylesheet" type="text/css" href="style.css">
   <meta charset = "utf-8"/>
-  <script>
-   function validateName(){
-     var str = document.form.["Place_Form"]["placename"].value;
-     var regex1 = RegExp(/[^A-Za-z0-9|^\s]/);
-     if(regex1.test(str)){
-       alert("Invalid Character! Please enter 0-9, A-Z, and a-z only. ")
-       return false;
-     }
-     alert(str);
-     return false;
-   }
-   </script>
 </head>
 
 <body>
-  <h1>Places Form </h1>
   <nav>
-    <a id = "Homepage" href="Homepage.html"> My Places </a>
-    <a id = "Form_input" href="Page1.html" > Form Input </a>
+    <a id = "Homepage1" href="Homepage.html"> My Places </a>
+    <a id = "Form_input1" href="Page1.html" > Form Input </a>
   </nav>
-
-  <form id = "Place_Form" method = "GET" onsubmit="validateName()"  action ="http://www-users.cselabs.umn.edu/~tulaj001/form_handler.php">
+  <h1>Places Form </h1>
+  <form id = "Place_Form" method = "GET" action ="http://www-users.cselabs.umn.edu/~tulaj001/form_handler.php">
     <label>Name of the place:</label>
-    <input type="text" name="placename" required><br>
-
+    <input type="text" name="placename" pattern = "[A-Za-z0-9\s]+"  required><br>
+    <label>Addressline1:</label>
+    <input type="text" name="addressline1" pattern = "[A-Za-z0-9\s]+" required><br>
+    <label>Addressline2:</label>
+    <input type="text" name="addressline2" pattern = "[A-Za-z0-9\s]+" ><br>
+    <label> Opentime:</label>
+    <input type="time" name="opentime" required><br>
+    <label> Closetime:</label>
+    <input type="time" name="closetime" required> <br/>
+    <label> Additionalinfo:</label>
+    <input type="url" name="additionalinfo" ><br>
     <button type = "submit" id = "btn-s"> Submit</button>
   </form>
   <p> This table was tested on the Chrome and Firefox browsers. </p>
 </body>
 </html>
-
-
-<label>Addressline1:</label>
-<input type="text" name="addressline1" required><br>
-<label>Addressline2:</label>
-<input type="text" name="addressline2" ><br>
-<label> Opentime:</label>
-<input type="time" name="opentime" required><br>
-<label> Closetime:</label>
-<input type="time" name="closetime" required> <br/>
-<label> Additionalinfo:</label>
-<input type="url" name="additionalinfo" ><br>

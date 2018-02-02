@@ -4,16 +4,59 @@
   <title> Mark's Favorite Places </title>
   <link rel="stylesheet" type="text/css" href="style.css">
   <meta charset = "utf-8"/>
+  <script>
+  function My_Function( x ) {
+    var Lake = document.getElementById("Lakep");
+    var Mama = document.getElementById("Mamap");
+    var Sva = document.getElementById("Svap");
+    var Spyhouse = document.getElementById("Spyhousep");
+    var goldy = document.getElementById("Gophersp");
+    goldy.style.display = "none";
+    Lake.style.display = "none";
+    Mama.style.display = "none";
+    Sva.style.display = "none";
+    Spyhouse.style.display = "none";
+      switch (x) {
+        case 1:
+          Lake.style.display = "block";
+        break;
+
+        case 2:
+          Mama.style.display = "block";
+        break;
+
+        case 3:
+          Sva.style.display = "block";
+        break;
+
+        case 4:
+          Spyhouse.style.display = "block";
+        break;
+        default:
+          goldy.style.display = "block";
+      }
+    }
+  </script>
+  <script>
+    !function(d,s,id){
+      var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';
+      if(!d.getElementById(id)){
+        js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";
+        fjs.parentNode.insertBefore(js,fjs);
+      }
+    }
+(document,"script","twitter-wjs");
+  </script>
 </head>
 
 <body>
-
   <nav>
-    <a href="Homepage.html" > My Places </a> |
-    <a href="Page1.html" > Form Input </a>
+    <a id = "Homepage" href="Homepage.html"> My Places </a>
+    <a id = "Form_input" href="Page1.html" > Form Input </a>
   </nav>
-
-  <table>
+<div id = "wrapper">
+<div id="leftdiv">
+   <table>
     <caption> My Favorite Places </caption>
     <tr>
       <td> Name </td>
@@ -46,61 +89,16 @@
       <td> <a href = "https://spyhousecoffee.com/pages/northeast" > Spyhouse Info </a> </td>
     </tr>
   </table>
-
 <img src ="gophers-mascot.png" id="Gophersp"  alt = "Gophers">
 <img src ="Mama.jpg" id = "Mamap" alt = "Mama">
 <img src = "Spyhouse.jpg"  id = "Spyhousep" alt = "Spyhouse">
 <img src = "sva.png" id = "Svap" alt = "SVA">
-<img src = "lake.jpg" id = "Lakep"  width="50%" height= "50%" alt = "Lake">
+<img src = "lake.jpg" id = "Lakep"  alt = "Lake">
+
+</div>
 <a class="twitter-timeline"  href="https://twitter.com/hashtag/UMN" data-widget-id="958573622163058690">#UMN Tweets</a>
+</div>
 
   <p> This table was tested on the Chrome and Firefox browsers. </p>
-  <script>
-  function My_Function( x ) {
-
-    var Lake = document.getElementById("Lakep");
-    var Mama = document.getElementById("Mamap");
-    var Sva = document.getElementById("Svap");
-    var Spyhouse = document.getElementById("Spyhousep");
-    var goldy = document.getElementById("Gophersp");
-    goldy.style.display = "none";
-    Lake.style.display = "none";
-    Mama.style.display = "none";
-    Sva.style.display = "none";
-    Spyhouse.style.display = "none";
-      switch (x) {
-        case 1:
-          Lake.style.display = "block";
-        break;
-
-        case 2:
-          Mama.style.display = "block";
-        break;
-
-        case 3:
-          Sva.style.display = "block";
-        break;
-
-        case 4:
-          Spyhouse.style.display = "block";
-        break;
-        default:
-          goldy.style.display = "block";
-      }
-    }
-  </script>
-
-<script>
-  !function(d,s,id){
-    var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';
-    if(!d.getElementById(id)){
-      js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";
-      fjs.parentNode.insertBefore(js,fjs);
-    }
-    window.alert(js.id);
-  }
-  (document,"script","twitter-wjs");
-</script>
-
 </body>
 </html>
