@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title> Mark's Favorite Places </title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <meta charset = "utf-8"/>
+  <script>
+  function My_Function( x ) {
+    var Lake = document.getElementById("Lakep");
+    var Mama = document.getElementById("Mamap");
+    var Sva = document.getElementById("Svap");
+    var Spyhouse = document.getElementById("Spyhousep");
+    var goldy = document.getElementById("Gophersp");
+    goldy.style.display = "none";
+    Lake.style.display = "none";
+    Mama.style.display = "none";
+    Sva.style.display = "none";
+    Spyhouse.style.display = "none";
+      switch (x) {
+        case 1:
+          Lake.style.display = "block";
+        break;
+
+        case 2:
+          Mama.style.display = "block";
+        break;
+
+        case 3:
+          Sva.style.display = "block";
+        break;
+
+        case 4:
+          Spyhouse.style.display = "block";
+        break;
+        default:
+          goldy.style.display = "block";
+      }
+    }
+  </script>
+  <script>
+    !function(d,s,id){
+      var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';
+      if(!d.getElementById(id)){
+        js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";
+        fjs.parentNode.insertBefore(js,fjs);
+      }
+    }
+(document,"script","twitter-wjs");
+  </script>
+</head>
+
+<body>
+  <nav>
+    <a id = "Homepage" href="Homepage.html"> My Places </a>
+    <a id = "Form_input" href="Page1.html" > Form Input </a>
+  </nav>
+<div id = "wrapper">
+<div id="leftdiv">
+   <table>
+    <caption> My Favorite Places </caption>
+    <tr>
+      <td> Name </td>
+      <td> Address </td>
+      <td> Hours </td>
+      <td> Information </td>
+    </tr>
+    <tr>
+      <td id = "Lake" onclick= "My_Function(1);"> Lake of the Isles </td>
+      <td> 2500 Lake of the Isles Parkway E Minneapolis, MN 55405 </td>
+      <td> 6 am-midnight in developed areas <br />6 am-10 pm in undeveloped areas </td>
+      <td> <a href = "https://www.minneapolisparks.org/parks__destinations/parks__lakes/lake_of_the_isles_park/" > Park Info </a> </td>
+    </tr>
+    <tr>
+      <td id = "Mama" onclick = "My_Function(2);" > Mama G's </td>
+      <td> 9705 County Rd 101, Maple Grove, MN 55311 </td>
+      <td> 11:00 AM – 2:00 AM </td>
+      <td> <a href = "http://mamags.com" > Bar Info </a> </td>
+    </tr>
+    <tr>
+      <td id = "Sva" onclick="My_Function(3)"> UMN SVA </td>
+      <td> Johnston Hall Room: B18 <br />101 Pleasant St SE, Minneapolis, MN 55455 </td>
+      <td> 8:00 AM – 5:00 PM </td>
+      <td> <a href = "https://gopherlink.umn.edu/organization/1474" > SVA Info </a> </td>
+    </tr>
+    <tr>
+      <td id = "Spyhouse" onclick="My_Function(4)"> Spyhouse Coffee </td>
+      <td> 945 Broadway St NE Minneapolis MN 55413 </td>
+      <td> 8:00 AM – 11:00 PM </td>
+      <td> <a href = "https://spyhousecoffee.com/pages/northeast" > Spyhouse Info </a> </td>
+    </tr>
+  </table>
+<img src ="gophers-mascot.png" id="Gophersp"  alt = "Gophers">
+<img src ="Mama.jpg" id = "Mamap" alt = "Mama">
+<img src = "Spyhouse.jpg"  id = "Spyhousep" alt = "Spyhouse">
+<img src = "sva.png" id = "Svap" alt = "SVA">
+<img src = "lake.jpg" id = "Lakep"  alt = "Lake">
+
+</div>
+<a class="twitter-timeline"  href="https://twitter.com/hashtag/UMN" data-widget-id="958573622163058690">#UMN Tweets</a>
+</div>
+
+  <p> This table was tested on the Chrome and Firefox browsers. </p>
+</body>
+</html>
