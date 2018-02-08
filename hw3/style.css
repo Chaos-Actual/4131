@@ -3,27 +3,29 @@ html {
 }
 
 nav {
-   display: block;
-   background-color: red;
-   align-content:center;
-   padding: 1%;
-   margin: 1%;
+  display: block;
+  background-color: maroon;
+  align-content:center;
+  padding: 1%;
+  margin: 1%;
+  border-radius: 10px;
 }
 body {
     height: 100%;
+    background-color: #416270;
 }
 caption {
    display: table-caption;
    text-align: center;
    font-style: italic;
-   font-size: 250%;
+   font-size: 200%;
    color: maroon;
    font-weight: bold;
    text-shadow: 2px 2px gold;
 }
 
 label {
-   display: inline-block; width: 125px;
+   display: inline-block; width: 110%;
 }
 
 input {
@@ -34,16 +36,20 @@ input {
 
 table, td {
    border: 5px solid maroon;
+   border-collapse: collapse;
 }
  td {
    padding: 1%;
-   background-color: gold;
+   background: linear-gradient(#6291B0, lightcyan);
 }
 
 table {
-  width: 100%;
-  height: 100%;
+  width: 80%;
+margin-left: 10%;
+margin-right: 10%;
+  height: 70%;
 }
+
 button {
    text-align:center;
 }
@@ -54,18 +60,32 @@ tr:first-child {
    text-decoration: underline;
    font-size: 110%;
  }
+#Homepage{
+    color: gold;
+    text-decoration: none;
+}
 
+#Form_input{
+    color: gold;
+    text-decoration: none;
+}
 
 #wrapper{
 width: 100%;
-float: left;
-background-color: lightcyan;
-
+height: 90%;
 }
 
 #leftdiv{
-   float: left;
-   width: 55%;
+  float: left;
+
+  width: 70%;
+  height: 100%;
+}
+
+#rl{
+  float: left;
+  width: 20%;
+  height: 75%;
 }
 
 #Place_Form {
@@ -94,11 +114,15 @@ background-color: lightcyan;
 }
 
 #map {
-    height: 100%;
+    height: 75%;
+    width: 70%;
+    align:Center;
+    margin-left: 15%;
+    margin-right: 15;
+    margin-bottom: 10%;
 }
 
 .twitter-timeline {
-    height:100%; width:20% !important;
-    margin-left: 5%;
+    height:70%; width:95% !important;
 
 }
