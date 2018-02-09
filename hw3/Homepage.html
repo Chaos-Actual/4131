@@ -4,6 +4,7 @@
   <title> Mark's Favorite Places </title>
   <link rel="stylesheet" type="text/css" href="style.css">
   <meta charset = "utf-8"/>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbKYATJkVtZAZa6BPvq-zPqSttGileOI4&libraries=places"></script>
   <script>
     !function(d,s,id){
       var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';
@@ -23,9 +24,9 @@
   </nav>
 <div id = "wrapper">
 <div id="leftdiv">
-   <table>
+   <table id = "MyTable">
     <caption> My Favorite Places </caption>
-    <tr>
+    <tr >
       <td> Name </td>
       <td> Address </td>
       <td> Hours </td>
@@ -33,25 +34,25 @@
     </tr>
     <tr>
       <td id = "Lake" > Lake of the Isles </td>
-      <td> 2500 Lake of the Isles Parkway E Minneapolis, MN 55405 </td>
+      <td class = "TableAddress"> 2500 Lake of the Isles Parkway E Minneapolis, MN 55405 </td>
       <td> 6 am-midnight in developed areas <br />6 am-10 pm in undeveloped areas </td>
       <td> <a href = "https://www.minneapolisparks.org/parks__destinations/parks__lakes/lake_of_the_isles_park/" > Park Info </a> </td>
     </tr>
-    <tr>
+    <tr >
       <td id = "Mama" > Mama G's </td>
-      <td> 9705 County Rd 101, Maple Grove, MN 55311 </td>
+      <td class = "TableAddress"> 9705 County Rd 101, Maple Grove, MN 55311 </td>
       <td> 11:00 AM – 2:00 AM </td>
       <td> <a href = "http://mamags.com" > Bar Info </a> </td>
     </tr>
-    <tr>
+    <tr >
       <td id = "Sva" > UMN SVA </td>
-      <td> Johnston Hall Room: B18 <br />101 Pleasant St SE, Minneapolis, MN 55455 </td>
+      <td class = "TableAddress"> Johnston Hall Room: B18 <br />101 Pleasant St SE, Minneapolis, MN 55455 </td>
       <td> 8:00 AM – 5:00 PM </td>
       <td> <a href = "https://gopherlink.umn.edu/organization/1474" > SVA Info </a> </td>
     </tr>
     <tr>
       <td id = "Spyhouse" > Spyhouse Coffee </td>
-      <td> 945 Broadway St NE Minneapolis MN 55413 </td>
+      <td class = "TableAddress"> 945 Broadway St NE Minneapolis MN 55413 </td>
       <td> 8:00 AM – 11:00 PM </td>
       <td> <a href = "https://spyhousecoffee.com/pages/northeast" > Spyhouse Info </a> </td>
     </tr>
@@ -62,7 +63,12 @@
 </div>
 </div>
 
-<div id = "Form_items">adsf asdfasdfasdfa fasd f asdf asdf asdf asdf asdfasd fasd fas dfa sdf asdf adf 
+<div id = "Form_items">
+  <label for = "location"> Location: </label>
+  <span><input type="text" name = "lacation"></span>
+  <label> radius </label>
+  <input type = "text" name = "radius">
+  <input type = "submit" name = ""
 </div>
 
   <div id="map"></div>
@@ -84,5 +90,8 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbKYATJkVtZAZa6BPvq-zPqSttGileOI4&callback=initMap"
     async defer></script>
 <p> This table was tested on the Chrome and Firefox browsers. </p>
+<script>
+alert(document.getElementsByClassName("TableAddress")[3].textContent);
+</script>
 </body>
 </html>
