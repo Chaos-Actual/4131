@@ -19,3 +19,16 @@
       map: map
     });
   }
+
+
+
+  <script>
+    var Places = document.getElementsByClassName("TableAddress");
+    var Names = document.getElementsByClassName("TableNames");
+    var strings = "";
+    for (var i = 0; i < Places.length; i++) {
+      strings = document.getElementsByClassName("TableAddress")[i].textContent;
+      strings = document.getElementsByClassName("TableNames")[i].textContent;
+    }
+  alert(strings);
+  </script>

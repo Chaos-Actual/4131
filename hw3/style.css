@@ -70,6 +70,20 @@ tr:first-child {
     text-decoration: none;
 }
 
+#Form_items {
+  white-space: nowrap;
+  width: 100%;
+  margin-left: 25%
+}
+
+#Radius {
+padding-left: 3%;
+}
+
+#SBM {
+  margin-left: 2%;
+}
+
 #wrapper{
 width: 100%;
 height: 90%;
