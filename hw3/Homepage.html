@@ -75,55 +75,61 @@
 
   <div id="map"></div>
   <script>
-    function initMap() {
+  function initMap() {
+    var infowindow = [];
+    var location = {lat: 44.9727, lng: -93.23540000000003};
+    var map = new google.maps.Map(document.getElementById('map'), {
+      center: location,
+      zoom: 10
+    });
+    var home_marker = new google.maps.Marker({
+      position: location,
+      map: map,
+      title: "UMN"
+    });
+    infowindow[0] = new google.maps.InfoWindow({
+      content: "UMN"
+    });
 
-      var marker = [];
-      var location = {lat: 44.9727, lng: -93.23540000000003};
-      var map = new google.maps.Map(document.getElementById('map'), {
-        center: location,
-        zoom: 10
-      });
-      var home_marker = new google.maps.Marker({
-        position: location,
-        map: map,
-        title: "UMN"
-      });
+    home_marker.addListener('click',function(){
+      infowindow[0].open(map,this);
+    })
+
+    var service = new google.maps.places.PlacesService(map);
+    var geocoder = new google.maps.Geocoder();
+    var Places = document.getElementsByClassName("TableAddress");
+    var Marker = [];
+    var Names;
+    var address;
+    var i = 0;
+      function getAddresses(){
+
+          address = document.getElementsByClassName("TableAddress")[i].textContent;
+          geocoder.geocode( { 'address': address}, function(results, status) {
+            if (status == 'OK') {
+              Marker[i] = new google.maps.Marker({
+                  map: map,
+                  position: results[0].geometry.location
+              });
+            } else {
+              alert('Geocode was not successful for the following reason: ' + status);
+            }
+           });
+
+     }
+     getAddresses();
+
+     }
+
+  }
 
 
 
-      var service = new google.maps.places.PlacesService(map);
-      var geocoder = new google.maps.Geocoder();
-      var Places = document.getElementsByClassName("TableAddress");
-      var infowindow = [];
-
-      for (var i = 0; i < Places.length ; i++) {
-        var address = document.getElementsByClassName("TableAddress")[i].textContent;
-        var Names = document.getElementsByClassName("TableNames")[i].textContent;
-      geocoder.geocode( { 'address': address}, function(results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-          marker = new google.maps.Marker({
-            position: {lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng()},
-            map: map,
-            title: Names
-          });
 
 
 
-      for (var i = 0; i < Places.length ; i++) {
-        var address = document.getElementsByClassName("TableAddress")[i].textContent;
-        var Names = document.getElementsByClassName("TableNames")[i].textContent;
-        infowindow[i] = new google.maps.InfoWindow({
-          content: Names
-         })
-            marker.addListener('click', function() {
-            infowindow[i].open(map, this);
-            });
 
-              } else {alert("Error " + status)}
-        });
-      }
 
-    }
   </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbKYATJkVtZAZa6BPvq-zPqSttGileOI4&callback=initMap"
     async defer></script>

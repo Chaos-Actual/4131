@@ -1,59 +1,35 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Place details</title>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
-    <style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      #map {
-        height: 100%;
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-    </style>
-    <script>
-      // This example requires the Places library. Include the libraries=places
-      // parameter when you first load the API. For example:
-      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
-
-      function initMap() {
-        var map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -33.866, lng: 151.196},
-          zoom: 15
-        });
-
-        var infowindow = new google.maps.InfoWindow();
-        var service = new google.maps.places.PlacesService(map);
-
-        service.getDetails({
-          placeId: 'ChIJN1t_tDeuEsdfasdfasdfffffffffffffffffffffffffffmsRUsoyG83frY4'
-        }, function(place, status) {
-          if (status === google.maps.places.PlacesServiceStatus.OK) {
+<script>
+function initMap() {
+      var infowindow = [];
+      var lat = [];
+      var long = [];
+      var location = {lat: 44.9727, lng: -93.23540000000003};
+      var map = new google.maps.Map(document.getElementById('map'), {
+        center: location,
+        zoom: 10
+      });
+      var home_marker = new google.maps.Marker({
+        position: location,
+        map: map,
+        title: "UMN"
+      });
+      var service = new google.maps.places.PlacesService(map);
+      var geocoder = new google.maps.Geocoder();
+      var Places = document.getElementsByClassName("TableAddress");
+      for (var i = 0; i < Places.length ; i++) {
+        var address = document.getElementsByClassName("TableAddress")[i].textContent;
+        var Names = document.getElementsByClassName("TableNames")[i].textContent;
+        alert(address);
+        geocoder.geocode( { 'address': address}, function(results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
             var marker = new google.maps.Marker({
+              alert(results[0].geometry.location.lat() + " " results[0].geometry.location.lng());
+              position: {lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng()},
               map: map,
-              position: place.geometry.location
+              title: Names
             });
-            google.maps.event.addListener(marker, 'click', function() {
-              infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
-                'Place ID: ' + place.place_id + '<br>' +
-                place.formatted_address + '</div>');
-              infowindow.open(map, this);
-            });
-          }
-        });
+          });else {alert("Error")}
+        }
       }
+    }
     </script>
-  </head>
-  <body>
-    <div id="map"></div>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbKYATJkVtZAZa6BPvq-zPqSttGileOI4&libraries=places&callback=initMap">
-    </script>
-  </body>
-</html>
