@@ -63,12 +63,31 @@
 </div>
 </div>
 
-<div id = "Form_items">
-  <label for = "location"> Location:
-    <input type="text" name = "lacation">
+<div  id = "Search_near_me" >
+  <label id = "Nearby"> Nearby:
+    <select  name = "Nearby">
+      <option value = "resaurant">Restaurant  </option>
+      <option value = "hospital">Hospital  </option>
+      <option value = "museum">Museum  </option>
+      <option value = "supermarket">Supermarket  </option>
+     </select>
     <label id = "Radius"> Radius:
-      <input type = "text" name = "radius">
-      <button id = "SBM" type = "submit" name = "Search By Me">Search By Me</button>
+      <input type = "number" name = "Radius">
+      <button id = "SBM" type = "submit" name = "Search By Me">Search Near Me</button>
+      </label>
+    </label>
+</div>
+<div id = "Directions">
+  <label id = "destination"> Destination:
+    <input type = "text" pattern = "[A-Za-z0-9\s]+"  name = "destination">
+    <label id = "travel"> Mode of Travel:
+      <select name = "travel">
+        <option value = "Driving">Driving  </option>
+        <option value = "Walking">Walking  </option>
+        <option value = "Bicycling">Bicycling  </option>
+        <option value = "Transit">Transit  </option>
+       </select>
+      <button id = "get_directions" type = "submit" name = "get_directions">Get Directions</button>
       </label>
     </label>
 </div>
@@ -112,38 +131,29 @@
 
     <!-- Calls goecode to get lat and long for each place. Then adds a marker with an infowindow. -->
     function geocodeHelper(Address, Name){
-          geocoder.geocode( { 'address': Address}, function(results, status) {
-            if (status == 'OK') {
-              var marker = new google.maps.Marker({
-                  map: map,
-                  position: results[0].geometry.location,
-                  title: Name
-              });
+      geocoder.geocode( { 'address': Address}, function(results, status) {
+       if (status == 'OK') {
+        var marker = new google.maps.Marker({
+          map: map,
+          position: results[0].geometry.location,
+          title: Name
+        });
 
-              var infowindow = new google.maps.InfoWindow({
-                content: Name
-              });
+        var infowindow = new google.maps.InfoWindow({
+          content: Name
+        });
 
-              marker.addListener('click', function() {
-                infowindow.open(map, marker);
-                });
+        marker.addListener('click', function() {
+         infowindow.open(map, marker);
+        });
 
-            } else { alert('Geocode was not successful for the following reason: ' + status); }
-           });
-      }
-
-
+       } else { alert('Geocode was not successful for the following reason: ' + status); }
+     });
+   }
   }
 
-
-
-
-
-
-
-
   </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbKYATJkVtZAZa6BPvq-zPqSttGileOI4&callback=initMap"
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbKYATJkVtZAZa6BPvq-zPqSttGileOI4&callback=initMap"
     async defer></script>
 <p> This table was tested on the Chrome and Firefox browsers. </p>
 
