@@ -64,16 +64,16 @@
 </div>
 
 <div  id = "Search_near_me" >
-  <label id = "Nearby"> Nearby:
-    <select  name = "Nearby">
-      <option value = "resaurant">Restaurant  </option>
+  <label > Nearby:
+    <select id = "Nearby" name = "Nearby">
+      <option value = "restaurant">Restaurant  </option>
       <option value = "hospital">Hospital  </option>
       <option value = "museum">Museum  </option>
       <option value = "supermarket">Supermarket  </option>
      </select>
-    <label id = "Radius"> Radius:
-      <input type = "number" name = "Radius">
-      <button id = "SBM" type = "submit" name = "Search By Me">Search Near Me</button>
+    <label > Radius:
+      <input id = "Radius" type = "number" name = "Radius">
+      <button id = "SBM" type = "submit" name = "Search By Me" onclick = "SearchFunction();">Search Near Me</button>
       </label>
     </label>
 </div>
@@ -94,10 +94,11 @@
 
   <div id="map"></div>
   <script>
+
   function initMap() {
-    var home_infowindow;
-    var location = {lat: 44.9727, lng: -93.23540000000003};
-    var map = new google.maps.Map(document.getElementById('map'), {
+   var home_infowindow;
+   var location = {lat: 44.9727, lng: -93.23540000000003};
+     map = new google.maps.Map(document.getElementById('map'), {
       center: location,
       zoom: 10
     });
@@ -110,7 +111,7 @@
       title: "UMN"
     });
 
-    home_infowindow = new google.maps.InfoWindow({
+    var home_infowindow = new google.maps.InfoWindow({
       content: "UMN"
     });
 
@@ -118,9 +119,10 @@
       home_infowindow.open(map,this);
     })
 
-    var service = new google.maps.places.PlacesService(map);
+
     var geocoder = new google.maps.Geocoder();
     var Places = document.getElementsByClassName("TableAddress");
+    MarkerArray= [];
 
     <!-- Loop through the places and call the goecode helper function on each place -->
     for(var i = 0 ; i < Places.length; i ++){
@@ -146,15 +148,57 @@
         marker.addListener('click', function() {
          infowindow.open(map, marker);
         });
-
+        MarkerArray.push(marker);
        } else { alert('Geocode was not successful for the following reason: ' + status); }
      });
    }
+
+  }
+
+
+  function SearchFunction(){
+    var service = new google.maps.places.PlacesService(map);
+
+    service.nearbySearch({
+            location: map.getCenter(),
+            radius:document.getElementById("Radius").value,
+            type: document.getElementById("Nearby").value
+          }, callback);
+  }
+
+  function callback(results, status) {
+    clearMarkers(MarkerArray);
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      for (var i = 0; i < results.length; i++) {
+        createMarker(results[i]);
+      }
+    }
+  }
+
+  function createMarker(place) {
+    var placeLoc = place.geometry.location;
+    var marker = new google.maps.Marker({
+      map: map,
+      position: place.geometry.location
+    });
+    MarkerArray.push(marker);
+    var infowindow = new google.maps.InfoWindow({
+      content: "dsfasdf"
+    });
+
+    google.maps.event.addListener(marker, 'click', function() {
+      infowindow.setContent(place.name);
+      infowindow.open(map, this);
+    });
+  }
+  function clearMarkers(markers){
+    for(var i = 0; i < markers.length; i++){
+      markers[i].setMap(null);
+    }
   }
 
   </script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbKYATJkVtZAZa6BPvq-zPqSttGileOI4&callback=initMap"
-    async defer></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbKYATJkVtZAZa6BPvq-zPqSttGileOI4&libraries=places&callback=initMap" async defer></script>
 <p> This table was tested on the Chrome and Firefox browsers. </p>
 
 </body>
