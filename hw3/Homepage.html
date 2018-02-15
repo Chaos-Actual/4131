@@ -14,10 +14,12 @@
       }
     }
 (document,"script","twitter-wjs");
+longitude = null;
+latitude = null;
   </script>
 </head>
 
-<body>
+<body onload = "GetLocalLocation();">
   <nav>
     <a id = "Homepage" href="Homepage.html"> My Places </a>
     <a id = "Form_input" href="Page1.html" > Form Input </a>
@@ -93,6 +95,7 @@
 </div>
   <div id="map"></div>
   <script>
+
   function initMap() {
    var home_infowindow;
     MarkerArray= [];
@@ -194,14 +197,12 @@
     }
   }
 
- function getLocationHelper(latitude, longitude) {
-  alert(latitude + " " + longitude);
+ function getLocation() {
   directionsDisplay.setMap(map);
   directionsDisplay.setPanel(document.getElementById('directtions_div'));
   calculateAndDisplayRoute(directionsService, directionsDisplay, latitude, longitude );
  }
-function calculateAndDisplayRoute(directionsService, directionsDisplay, latitude,longitude) {
-
+function calculateAndDisplayRoute(directionsService, directionsDisplay) {
    directionsService.route({
     origin:{lat: latitude , lng: longitude },
     destination: document.getElementById("destination").value,
@@ -214,7 +215,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay, latitude
     clearMarkers(MarkerArray);
  }
 
- function getLocation() {
+ function GetLocalLocation() {
      if (navigator.geolocation) {
          navigator.geolocation.getCurrentPosition(showPosition);
      } else {
@@ -222,8 +223,8 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay, latitude
      }
  }
  function showPosition(position) {
-
-  getLocationHelper(position.coords.latitude , position.coords.longitude);
+  longitude = position.coords.longitude;
+  latitude = position.coords.latitude;
  }
 
   </script>
