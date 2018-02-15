@@ -95,6 +95,7 @@
   <script>
   function initMap() {
    var home_infowindow;
+    MarkerArray= [];
    var location = {lat: 44.9727, lng: -93.23540000000003};
      map = new google.maps.Map(document.getElementById('map'), {
       center: location,
@@ -103,17 +104,17 @@
 
     <!-- Set up UMN Marker-->
 
-    var home_marker = new google.maps.Marker({
+    var marker= new google.maps.Marker({
       position: location,
       map: map,
       title: "UMN"
     });
-
+    MarkerArray.push(marker);
     var home_infowindow = new google.maps.InfoWindow({
       content: "UMN"
     });
 
-    home_marker.addListener('click',function(){
+    marker.addListener('click',function(){
       home_infowindow.open(map,this);
     })
 
@@ -121,7 +122,6 @@
     directionsDisplay = new google.maps.DirectionsRenderer();
     var geocoder = new google.maps.Geocoder();
     var Places = document.getElementsByClassName("TableAddress");
-    MarkerArray= [];
 
     <!-- Loop through the places and call the goecode helper function on each place -->
     for(var i = 0 ; i < Places.length; i ++){
@@ -194,17 +194,16 @@
     }
   }
 
- function getLocation() {
-
-
+ function getLocationHelper(latitude, longitude) {
+  alert(latitude + " " + longitude);
   directionsDisplay.setMap(map);
   directionsDisplay.setPanel(document.getElementById('directtions_div'));
-
-  calculateAndDisplayRoute(directionsService, directionsDisplay);
+  calculateAndDisplayRoute(directionsService, directionsDisplay, latitude, longitude );
  }
-function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+function calculateAndDisplayRoute(directionsService, directionsDisplay, latitude,longitude) {
+
    directionsService.route({
-    origin:{lat: 44.9727, lng: -93.23540000000003},
+    origin:{lat: latitude , lng: longitude },
     destination: document.getElementById("destination").value,
     travelMode: document.getElementById("travel_mode").value
    }, function(response, status) {
@@ -213,6 +212,18 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
     } else { window.alert('Directions request failed due to ' + status);}
       });
     clearMarkers(MarkerArray);
+ }
+
+ function getLocation() {
+     if (navigator.geolocation) {
+         navigator.geolocation.getCurrentPosition(showPosition);
+     } else {
+        alert( "Geolocation is not supported by this browser.");
+     }
+ }
+ function showPosition(position) {
+
+  getLocationHelper(position.coords.latitude , position.coords.longitude);
  }
 
   </script>
