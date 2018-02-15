@@ -135,3 +135,6 @@ tr:first-child {
 #Directions{
   height: auto;
 }
+#directions_div{
+  display: block;
+}
