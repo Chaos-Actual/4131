@@ -66,36 +66,32 @@ latitude = null;
 </div>
 
 <div  id = "Search_near_me" >
-  <label> Nearby:
-    <select id = "Nearby" name = "Nearby">
+  <label class = "labels"> Nearby: </label>
+    <select class = "selects" id = "Nearby" name = "Nearby">
       <option value = "restaurant">Restaurant  </option>
       <option value = "hospital">Hospital  </option>
       <option value = "museum">Museum  </option>
       <option value = "supermarket">Supermarket  </option>
      </select>
-    <label > Radius:
-      <input id = "Radius" type = "number" name = "Radius">
+    <label class = "labels"> Radius:</label>
+      <input class = "inputs" id = "Radius" type = "number" name = "Radius">
       <button id = "SBM" type = "submit" name = "Search By Me" onclick = "SearchFunction();">Search Near Me</button>
-      </label>
-    </label>
 </div>
 <div id = "Directions">
-  <label> Destination:
-    <input  id = "destination" type = "text" pattern = "[A-Za-z0-9\s]+"  name = "destination">
-    <label id = "travel"> Mode of Travel:
-      <select id = "travel_mode" name = "travel">
+  <label class = "labels"> Destination: </label>
+    <input class = "inputs"  id = "destination" type = "text" pattern = "[A-Za-z0-9\s]+"  name = "destination">
+    <label class = "labels"> Mode of Travel:</label>
+      <select class = "selects" id = "travel_mode" name = "travel">
         <option value = "DRIVING">Driving  </option>
         <option value = "WALKING">Walking  </option>
         <option value = "BICYCLING">Bicycling  </option>
         <option value = "TRANSIT">Transit  </option>
        </select>
       <button id = "get_directions" type = "submit" name = "get_directions" onclick = " getLocation();">Get Directions</button>
-      </label>
-    </label>
 </div>
+
   <div id="map"></div>
   <script>
-
   function initMap() {
    var home_infowindow;
     MarkerArray= [];
@@ -104,9 +100,7 @@ latitude = null;
       center: location,
       zoom: 10
     });
-
     <!-- Set up UMN Marker-->
-
     var marker= new google.maps.Marker({
       position: location,
       map: map,
@@ -116,23 +110,19 @@ latitude = null;
     var home_infowindow = new google.maps.InfoWindow({
       content: "UMN"
     });
-
     marker.addListener('click',function(){
       home_infowindow.open(map,this);
     })
-
     directionsService = new google.maps.DirectionsService();
     directionsDisplay = new google.maps.DirectionsRenderer();
     var geocoder = new google.maps.Geocoder();
     var Places = document.getElementsByClassName("TableAddress");
-
     <!-- Loop through the places and call the goecode helper function on each place -->
     for(var i = 0 ; i < Places.length; i ++){
       var address = document.getElementsByClassName("TableAddress")[i].textContent;
       var Names = document.getElementsByClassName("TableNames")[i].textContent;
       geocodeHelper(address, Names);
     }
-
     <!-- Calls goecode to get lat and long for each place. Then adds a marker with an infowindow. -->
     function geocodeHelper(Address, Name){
       geocoder.geocode( { 'address': Address}, function(results, status) {
@@ -142,11 +132,9 @@ latitude = null;
           position: results[0].geometry.location,
           title: Name
         });
-
         var infowindow = new google.maps.InfoWindow({
           content: Name
         });
-
         marker.addListener('click', function() {
          infowindow.open(map, marker);
         });
@@ -154,19 +142,15 @@ latitude = null;
        } else { alert('Geocode was not successful for the following reason: ' + status); }
      });
    }
-
   }
-
   function SearchFunction(){
     var service = new google.maps.places.PlacesService(map);
-
     service.nearbySearch({
             location: map.getCenter(),
             radius:document.getElementById("Radius").value,
             type: document.getElementById("Nearby").value
           }, callback);
   }
-
   function callback(results, status) {
     clearMarkers(MarkerArray);
     if (status === google.maps.places.PlacesServiceStatus.OK) {
@@ -175,7 +159,6 @@ latitude = null;
       }
     }
   }
-
   function createMarker(place) {
     var placeLoc = place.geometry.location;
     var marker = new google.maps.Marker({
@@ -185,7 +168,6 @@ latitude = null;
     MarkerArray.push(marker);
     var infowindow = new google.maps.InfoWindow({
     });
-
     google.maps.event.addListener(marker, 'click', function() {
       infowindow.setContent(place.name);
       infowindow.open(map, this);
@@ -196,7 +178,6 @@ latitude = null;
       markers[i].setMap(null);
     }
   }
-
  function getLocation() {
   directionsDisplay.setMap(map);
   directionsDisplay.setPanel(document.getElementById('directtions_div'));
@@ -214,7 +195,6 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
       });
     clearMarkers(MarkerArray);
  }
-
  function GetLocalLocation() {
      if (navigator.geolocation) {
          navigator.geolocation.getCurrentPosition(showPosition);
@@ -226,10 +206,12 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
   longitude = position.coords.longitude;
   latitude = position.coords.latitude;
  }
-
   </script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbKYATJkVtZAZa6BPvq-zPqSttGileOI4&libraries=places&callback=initMap" async defer></script>
+
+<div id = "directtions_div"> </div>
+
+
 <p> This table was tested on the Chrome and Firefox browsers. </p>
-<div id = "directtions_div"></div>
 </body>
 </html>
