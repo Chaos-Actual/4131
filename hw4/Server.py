@@ -25,6 +25,8 @@ def process_request(client_sock, input_str):
              file.close()
              msg = OK + cwd
              client_sock.send(bytes(msg, 'utf-8'))
+        elif request[1][1:] == 'csumn':
+            client_sock.send(bytes(MOVED_PERMANENTLY, 'utf-8'))
         #This attempts to open file if file exists
         elif os.path.isfile(request[1][1:]):
             file = open(request[1][1:],'r')
@@ -60,14 +62,18 @@ def process_request(client_sock, input_str):
     elif request[0] == 'POST':
         #Get PUT value argument
         post_string = str(input_lst[len(input_lst)-1])
-        post_handeler(post_string)
+        post_handeler(client_sock, post_string)
+    
 
 
-def post_handeler(submission):
+def post_handeler(client_sock,submission):
     inputs = submission.split('&')
+    response = ''
     for x in inputs:
-        print(str(x) + '\n')
-
+        response = response + str(x) + CRLF
+    response = OK + response
+    print(response)
+    client_sock.send(bytes(response, 'utf-8'))
 
 def client_talk(client_sock, client_addr):
     print('talking to {}'.format(client_addr))
