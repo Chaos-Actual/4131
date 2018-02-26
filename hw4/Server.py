@@ -17,9 +17,12 @@ FORBIDDEN = '403.html'
 def process_request(client_sock, input_str):
     input_lst = input_str.split(CRLF)
     request = input_lst[0].split(' ')
+    bol = not os.access(request[1][1:], os.R_OK)
+    if request[1][1:] == 'favicon.ico':
+        return
     if (request[0] == 'GET'):
         #Check if file has permissions
-        if os.path.isfile(request[1][1:]) & os.access(request[1][1:], os.R_OK):
+        if os.path.isfile(request[1][1:]) & bol:
              file = open(FORBIDDEN,'r')
              cwd = file.read()
              file.close()
@@ -63,8 +66,16 @@ def process_request(client_sock, input_str):
         #Get PUT value argument
         post_string = str(input_lst[len(input_lst)-1])
         post_handeler(client_sock, post_string)
-    
 
+    #OPTIONS request
+    elif request[0] == 'OPTIONS':
+        Options = 'OPTIONS,GET,POST,PUT'
+        Options_text = 'HTTP/1.1 200 OK{}Allow:{}{}{}'.format(CRLF, Options, CRLF, CRLF)
+        client_sock.send(bytes(Options_text,'utf-8'))
+
+    elif request[0] == 'DELETE':
+        if os.path.isfile(request[1][1:]):
+            os.remove(request[1][1:])
 
 def post_handeler(client_sock,submission):
     inputs = submission.split('&')
@@ -78,10 +89,11 @@ def post_handeler(client_sock,submission):
 def client_talk(client_sock, client_addr):
     print('talking to {}'.format(client_addr))
     data = client_sock.recv(BUFSIZE)
-    process_request(client_sock, data.decode('utf-8') )
+
 
     while data:
         print(data.decode('utf-8'))
+        process_request(client_sock, data.decode('utf-8') )
         data = client_sock.recv(BUFSIZE)
 
     # clean up
