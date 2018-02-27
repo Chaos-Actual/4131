@@ -112,7 +112,9 @@ def process_request(client_sock, input_str):
             print('EXECUTE:'+str(oct(os.stat(resource)[ST_MODE] & S_IXOTH)))
             if str(oct(os.stat(resource)[ST_MODE] & S_IROTH)) != '0o0':
                 os.remove(resource)
-                return 'HTTP/1.1 200 OK{}Date:{}'.format(CRLF,date.today())
+                now = datetime.now().isoformat()
+                now = now.replace('T', ' ')
+                return 'HTTP/1.1 200 OK{}Date:{}'.format(CRLF,now)
             else:
                 file = open(FORBIDDEN_FILE,'r')
                 file_content = file.read()
@@ -158,7 +160,6 @@ class EchoServer:
     print('listening on port {}'.format(port))
     self.host = host
     self.port = port
-
     self.setup_socket()
 
     self.accept()
