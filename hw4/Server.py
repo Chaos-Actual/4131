@@ -24,7 +24,7 @@ def process_request(client_sock, input_str):
     #Error check and facicon.ico check
     if len(input_lst) == 1 or request[1][1:] == 'favicon.ico':
         return
-
+    #Process GET requests
     if (request[0] == 'GET'):
         #Check if file has permissions
         if os.path.isfile(request[1][1:]) and str(oct(os.stat(request[1][1:])[ST_MODE] & S_IROTH)) == '0o0':
@@ -33,6 +33,7 @@ def process_request(client_sock, input_str):
              file.close()
              msg = OK + cwd
              client_sock.send(bytes(msg, 'utf-8'))
+        #Redirect
         elif request[1][1:] == 'csumn':
             client_sock.send(bytes(MOVED_PERMANENTLY, 'utf-8'))
         #This attempts to open file if file exists
@@ -74,13 +75,30 @@ def process_request(client_sock, input_str):
 
     #OPTIONS request
     elif request[0] == 'OPTIONS':
-        Options = 'OPTIONS,GET,POST,PUT'
-        Options_text = 'HTTP/1.1 200 OK{}Allow:{}{}{}'.format(CRLF, Options, CRLF, CRLF)
-        client_sock.send(bytes(Options_text,'utf-8'))
+        if len(input_str) > 1:
+            #check OPTIONS for full server
+            if request[1] == '/' and len(request[1]) == 1:
+                Options = 'OPTIONS,GET,HEAD,POST'
+                Options_text = 'HTTP/1.1 200 OK{}Allow:{}{}{}'.format(CRLF, Options, CRLF, CRLF)
+                client_sock.send(bytes(Options_text,'utf-8'))
+            elif request[1] == '/calendar.html':
+                 Options = 'OPTIONS,GET,HEAD'
+                 Options_text = 'HTTP/1.1 200 OK{}Allow:{}{}{}'.format(CRLF, Options, CRLF, CRLF)
+                 client_sock.send(bytes(Options_text,'utf-8'))
+            elif request[1] == '/form.html':
+                 Options = 'OPTIONS,GET,HEAD,POST'
+                 Options_text = 'HTTP/1.1 200 OK{}Allow:{}{}{}'.format(CRLF, Options, CRLF, CRLF)
+                 client_sock.send(bytes(Options_text,'utf-8'))
+            elif request[1] == '/DELETE':
+                 Options = 'OPTIONS,GET,HEAD,POST,PUT,DELETE'
+                 Options_text = 'HTTP/1.1 200 OK{}Allow:{}{}{}'.format(CRLF, Options, CRLF, CRLF)
+                 client_sock.send(bytes(Options_text,'utf-8'))
 
     elif request[0] == 'DELETE':
         if os.path.isfile(request[1][1:]):
-            os.remove(request[1][1:])
+            if str(oct(os.stat(request[1][1:])[ST_MODE] & S_IROTH)) != '0o0':
+                os.remove(request[1][1:])
+
 
 def post_handeler(client_sock,submission):
     inputs = submission.split('&')
