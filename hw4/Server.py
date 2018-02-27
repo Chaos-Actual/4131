@@ -2,6 +2,7 @@
 # See https://docs.python.org/3.2/library/socket.html
 # for a decscription of python socket and its parameters
 import socket, os, sys
+from stat import *
 from threading import Thread
 from argparse import ArgumentParser
 CRLF = '\r\n'
@@ -13,16 +14,20 @@ MOVED_PERMANENTLY = 'HTTP/1.1 301 MOVED PERMANENTLY{}Location:  https://www.cs.u
 BUFSIZE = 4096
 NOT_FOUND_404 = '404.html'
 FORBIDDEN = '403.html'
+LOCALHOST = 'localhost'
+PORT = 9001
 
 def process_request(client_sock, input_str):
     input_lst = input_str.split(CRLF)
     request = input_lst[0].split(' ')
-    bol = not os.access(request[1][1:], os.R_OK)
-#    if request[1][1:] == 'favicon.ico':
-#        return
+    print(input_str)
+    #Error check and facicon.ico check
+    if len(input_lst) == 1 or request[1][1:] == 'favicon.ico':
+        return
+
     if (request[0] == 'GET'):
         #Check if file has permissions
-        if os.path.isfile(request[1][1:]) & bol:
+        if os.path.isfile(request[1][1:]) and str(oct(os.stat(request[1][1:])[ST_MODE] & S_IROTH)) == '0o0':
              file = open(FORBIDDEN,'r')
              cwd = file.read()
              file.close()
@@ -89,10 +94,7 @@ def post_handeler(client_sock,submission):
 def client_talk(client_sock, client_addr):
     print('talking to {}'.format(client_addr))
     data = client_sock.recv(BUFSIZE)
-    print(data.decode('utf-8'))
     process_request(client_sock, data.decode('utf-8') )
-
-
 
     # clean up
     client_sock.shutdown(1)
@@ -124,13 +126,16 @@ class EchoServer:
       th.start()
 
 def parse_args():
-  parser = ArgumentParser()
-  parser.add_argument('--host', type=str, default='localhost',
-                      help='specify a host to operate on (default: localhost)')
-  parser.add_argument('-p', '--port', type=int, default=9001,
-                      help='specify a port to operate on (default: 9001)')
-  args = parser.parse_args()
-  return (args.host, args.port)
+  if len(sys.argv) == 1:
+    return (LOCALHOST, PORT)
+  elif len(sys.argv) == 2:
+    if int(sys.argv[1]) < 65535 and int(sys.argv[1]) > 0:
+      return(LOCALHOST, int(sys.argv[1]))
+    else:
+      print('ERROR: Port number out of range. Enter port number less than 65536 and greater than 0')
+      exit(1)
+  else:
+      print('ERROR: Too many arguments! Please enter only port number!')
 
 if __name__ == '__main__':
   (host, port) = parse_args()
