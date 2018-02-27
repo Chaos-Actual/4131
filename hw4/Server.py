@@ -18,8 +18,8 @@ def process_request(client_sock, input_str):
     input_lst = input_str.split(CRLF)
     request = input_lst[0].split(' ')
     bol = not os.access(request[1][1:], os.R_OK)
-    if request[1][1:] == 'favicon.ico':
-        return
+#    if request[1][1:] == 'favicon.ico':
+#        return
     if (request[0] == 'GET'):
         #Check if file has permissions
         if os.path.isfile(request[1][1:]) & bol:
@@ -89,12 +89,10 @@ def post_handeler(client_sock,submission):
 def client_talk(client_sock, client_addr):
     print('talking to {}'.format(client_addr))
     data = client_sock.recv(BUFSIZE)
+    print(data.decode('utf-8'))
+    process_request(client_sock, data.decode('utf-8') )
 
 
-    while data:
-        print(data.decode('utf-8'))
-        process_request(client_sock, data.decode('utf-8') )
-        data = client_sock.recv(BUFSIZE)
 
     # clean up
     client_sock.shutdown(1)
