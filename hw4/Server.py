@@ -59,7 +59,7 @@ def process_request(client_sock, input_str):
             client_sock.send(bytes(msg, 'utf-8'))
     #PUT request
     elif request[0] == 'PUT':
-        #Get PUT value argument
+        #Get PUT file argument
         put_string = str(input_lst[len(input_lst)-1])
         #Get file name to be created
         file_name = str(request[1][1:])

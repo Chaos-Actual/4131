@@ -36,8 +36,12 @@ def process_request(client_sock, input_str):
         if '.' in resource:
             file_type = str(resource.split('.',1)[1])
             #Check if MIME type will accept resource type
-            if str(file_type) not in input_lst[ACCEPT_MIME] and '*/*' not in input_lst[ACCEPT_MIME]:
-                return NOT_ACCEPTABLE_406
+            for i in input_lst:
+                print("in loop:" + str(i)    )
+                if 'Accept:' in i :
+                    if str(file_type) not in i and '*/*' not in i:
+                        return NOT_ACCEPTABLE_406
+                    break
         #Check if file has permissions
         if os.path.isfile(resource) and str(oct(os.stat(resource)[stat.ST_MODE] & stat.S_IROTH)) == '0o0':
              file = open(FORBIDDEN_FILE,'r')
