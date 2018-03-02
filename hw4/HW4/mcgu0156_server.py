@@ -13,13 +13,14 @@ NOT_FOUND = 'HTTP/1.1 404 NOT FOUND{}Connection: close{}{}'.format(CRLF,CRLF,CRL
 FORBIDDEN = 'HTTP/1.1 403 FORBIDDEN{}Connection: close{}{}'.format(CRLF,CRLF,CRLF)
 METHOD_NOT_ALLOWED = 'HTTP/1.1 405  METHOD NOT ALLOWED{}Allow: GET,POST,PUT,DELETE,OPTIONS{}Connection: close{}{}'.format(CRLF,CRLF,CRLF,CRLF)
 MOVED_PERMANENTLY = 'HTTP/1.1 301 MOVED PERMANENTLY{}Location:  https://www.cs.umn.edu/{}Connection: close{}{}'.format(CRLF,CRLF,CRLF,CRLF)
+NOT_ACCEPTABLE_406 = 'HTTP/1.1 406 NOT ACCEPTABLE{}Connection: close{}{}'.format(CRLF,CRLF,CRLF)
 BUFSIZE = 4096
+PORT = 9001
 NOT_FOUND_404 = '404.html'
 FORBIDDEN_FILE = '403.html'
-NOT_ACCEPTABLE_406 = 'HTTP/1.1 406 NOT ACCEPTABLE{}Connection: close{}{}'.format(CRLF,CRLF,CRLF)
 LOCALHOST = 'localhost'
-PORT = 9001
-ACCEPT_MIME = 3
+
+
 
 def process_request(client_sock, input_str):
     print('#######REQUEST#######\n'+ input_str)
@@ -82,7 +83,7 @@ def process_request(client_sock, input_str):
 
     #POST request
     elif request[0] == 'POST':
-        #Get PUT value argument
+        #Get POST value argument
         post_string = str(input_lst[len(input_lst)-1])
         post_input = post_handeler(client_sock, post_string)
         file = open('form.html', 'w')
@@ -157,7 +158,7 @@ def client_talk(client_sock, client_addr):
     print('talking to {}'.format(client_addr))
     data = client_sock.recv(BUFSIZE)
     response = process_request(client_sock, data.decode('utf-8'))
-    print('This is the server response:\n{}'.format(response))
+    print('######This is the server response:#######\n{}'.format(response))
     client_sock.send(bytes(response,'utf-8'))
     # clean up
     client_sock.shutdown(1)
