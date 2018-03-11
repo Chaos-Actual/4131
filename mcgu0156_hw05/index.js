@@ -64,7 +64,6 @@ const httpServer = http.createServer(function (req, res) {
         // server starts receiving the form data
         req.on('data', function(data) {
           reqBody += data;
-
         });
         // server has received all the form data
         req.on('end', function() {
@@ -98,10 +97,9 @@ function getWelcomePage(req, res) {
   });
 }
 
-// TO DO: YOU NEED TO COMPLETE THIS FUNCTION
 // function to return the favourites.html page back to the client
 function getFavouritesPage(req, res) {
-  // TO DO: Complete this function to return the favourites.html page present in client folder
+  // Complete this function to return the favourites.html page present in client folder
   fs.readFile('client/favourites.html', function(err, html) {
     if(err) {
       throw err;
@@ -152,8 +150,37 @@ function addPlaceFunction(req, res, reqBody) {
   // TO DO: After successful addition of the new place, redirect the user to favourites.html page.
   // TO DO: The status code associated with re-direction is 302
   // Hint: You can use querystring module for parsing form data
-}
+  fs.readFile('places.json', function(err, content) {
+      if(err) {
+        throw err;
+      }
 
+      //Parse string from add places form
+      var regex = /\w*=/;
+      var inputs  = reqBody.split(regex);
+      inputs.shift();
+      for (i = 0; i < inputs.length; i++){
+        inputs[i] = inputs[i].replace(/&/g,'');
+      }
+      // Add form inputs to JSON string
+      parseJson = JSON.parse(content);
+      parseJson.placeList.push({"placename": inputs[0],
+      "addressline1": inputs[1],
+      "addressline2": inputs[2],
+      "opentime": inputs[3],
+      "closetime": inputs[4],
+      "additionalinfo": inputs[5],
+      "additionalinfourl": inputs[6]});
+      //Write updates places JSON to file
+      var jsonString = JSON.stringify(parseJson);
+      console.log(jsonString);
+      fs.writeFile('places.json',jsonString,function (err) {
+        if (err) {throw err;}
+      });
+      res.writeHead(302, {Location: "http://localhost:9007/favourites.html"});
+      res.end();
+    });
+}
 // function to return the 404 page back to the client
 function get404(req, res) {
   //  Complete this function to return the 404.html page provided with the assignment
