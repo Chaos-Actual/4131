@@ -109,6 +109,14 @@ function getFavouritesPage(req, res) {
     res.write(html);
     res.end();
   });
+  fs.readFile('places.json', function(err, places) {
+    if(err) {
+      throw err;
+    }
+    var jsonPlaces = JSON.parse(places);
+    
+  });
+
 }
 
 // function to return the addPlace.html page back to the client
@@ -173,7 +181,6 @@ function addPlaceFunction(req, res, reqBody) {
       "additionalinfourl": inputs[6]});
       //Write updates places JSON to file
       var jsonString = JSON.stringify(parseJson);
-      console.log(jsonString);
       fs.writeFile('places.json',jsonString,function (err) {
         if (err) {throw err;}
       });
