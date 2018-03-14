@@ -20,7 +20,7 @@
 				var trHTML = '<tr>';
 				var name = result.res.placeList[i].placename;
 				var address = result.res.placeList[i].addressline1 + result.res.placeList[i].addressline2;
-				var open_close = result.res.placeList[i].opentime + result.res.placeList[i].closetime;
+				var open_close = result.res.placeList[i].opentime + ' / '+ result.res.placeList[i].closetime;
 				var information = result.res.placeList[i].additionalinfo;
 				var link = result.res.placeList[i].additionalinfourl;
 				trHTML += '<th>'+name+'</th>';

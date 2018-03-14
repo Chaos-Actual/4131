@@ -114,7 +114,7 @@ function getFavouritesPage(req, res) {
       throw err;
     }
     var jsonPlaces = JSON.parse(places);
-    
+
   });
 
 }
@@ -164,8 +164,12 @@ function addPlaceFunction(req, res, reqBody) {
       }
 
       //Parse string from add places form
+      var inputs = reqBody.replace(/\+/g, ' ');
+      inputs = decodeURIComponent(inputs);
+      console.log(inputs);
+
       var regex = /\w*=/;
-      var inputs  = reqBody.split(regex);
+      inputs  = inputs.split(regex);
       inputs.shift();
       for (i = 0; i < inputs.length; i++){
         inputs[i] = inputs[i].replace(/&/g,'');
