@@ -16,6 +16,9 @@ const hostname = '127.0.0.1';
 // port on which server runs
 const port = 9007;
 
+// Querystring to parse from data
+const querystring = require('querystring');
+
 // createServer method creates the http server
 // req, res objects are created automatically by Node.js
 const httpServer = http.createServer(function (req, res) {
@@ -150,39 +153,26 @@ function getListOfFavPlaces(req, res) {
   });
 }
 
-// TO DO: YOU NEED TO COMPLETE THIS FUNCTION
 // function to add details of a new place to places.json file
 // In this application, this function is called after submitting the form in addPlace.html
 function addPlaceFunction(req, res, reqBody) {
-  // TO DO: Complete this function to add details of a new place to places.json file
-  // TO DO: After successful addition of the new place, redirect the user to favourites.html page.
-  // TO DO: The status code associated with re-direction is 302
-  // Hint: You can use querystring module for parsing form data
+  // Complete this function to add details of a new place to places.json file
+  // After successful addition of the new place, redirect the user to favourites.html page.
+  // Querystring module for parsing form data
   fs.readFile('places.json', function(err, content) {
       if(err) {
         throw err;
       }
-
-      //Parse string from add places form
-      var inputs = reqBody.replace(/\+/g, ' ');
-      inputs = decodeURIComponent(inputs);
-      console.log(inputs);
-
-      var regex = /\w*=/;
-      inputs  = inputs.split(regex);
-      inputs.shift();
-      for (i = 0; i < inputs.length; i++){
-        inputs[i] = inputs[i].replace(/&/g,'');
-      }
+      var inputs = querystring.parse(reqBody);
       // Add form inputs to JSON string
       parseJson = JSON.parse(content);
-      parseJson.placeList.push({"placename": inputs[0],
-      "addressline1": inputs[1],
-      "addressline2": inputs[2],
-      "opentime": inputs[3],
-      "closetime": inputs[4],
-      "additionalinfo": inputs[5],
-      "additionalinfourl": inputs[6]});
+      parseJson.placeList.push({"placename": inputs.placename,
+      "addressline1": inputs.addressline1,
+      "addressline2": inputs.addressline2,
+      "opentime": inputs.opentime,
+      "closetime": inputs.closetime,
+      "additionalinfo": inputs.additionalinfo,
+      "additionalinfourl": inputs.additionalinfourl});
       //Write updates places JSON to file
       var jsonString = JSON.stringify(parseJson);
       fs.writeFile('places.json',jsonString,function (err) {

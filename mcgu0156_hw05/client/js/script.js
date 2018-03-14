@@ -3,7 +3,6 @@
 (function() {
 	// the API end point
 	var url = "getListOfFavPlaces";
-	var client = 'localhost:9007/places.json';
 	// TO DO: YOU NEED TO USE AJAX TO CALL getListOfFavPlaces end-point from server
 	// STEPS:
 	// 1. Hit the getListOfFavPlaces end-point of server using AJAX get method
