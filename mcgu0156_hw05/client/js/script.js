@@ -13,8 +13,8 @@
 	$(document).ready(function(){
     $.ajax({url: url, success: function(result){
 			var jsonString  = JSON.stringify(result);
-
 			var length = result.res.placeList.length;
+			// Get JSON object from file and add each place to the table
 			for (var i = 0; i < length; i++ ){
 				var trHTML = '<tr>';
 				var name = result.res.placeList[i].placename;
@@ -26,13 +26,10 @@
 				trHTML += '<th>'+address+'</th>';
 				trHTML += '<th>'+open_close+'</th>';
 				trHTML += '<th>'+information+'</th>';
-				trHTML += '<th>'+link+'</th>';
+				trHTML += '<th><a href="'+link+'">'+link+'</a></th>';
 				trHTML += '</tr>';
-
 				$("#myFavTable").append(trHTML);
 			}
-
-
   }});
 });
 
