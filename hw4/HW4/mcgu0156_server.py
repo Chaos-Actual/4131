@@ -20,8 +20,6 @@ NOT_FOUND_404 = '404.html'
 FORBIDDEN_FILE = '403.html'
 LOCALHOST = 'localhost'
 
-
-
 def process_request(client_sock, input_str):
     print('#######REQUEST#######\n'+ input_str)
     input_lst = input_str.split(CRLF)
@@ -37,8 +35,12 @@ def process_request(client_sock, input_str):
         if '.' in resource:
             file_type = str(resource.split('.',1)[1])
             #Check if MIME type will accept resource type
-            if str(file_type) not in input_lst[ACCEPT_MIME] and '*/*' not in input_lst[ACCEPT_MIME]:
-                return NOT_ACCEPTABLE_406
+            for i in input_lst:
+                print("in loop:" + str(i)    )
+                if 'Accept:' in i :
+                    if str(file_type) not in i and '*/*' not in i:
+                        return NOT_ACCEPTABLE_406
+                    break
         #Check if file has permissions
         if os.path.isfile(resource) and str(oct(os.stat(resource)[stat.ST_MODE] & stat.S_IROTH)) == '0o0':
              file = open(FORBIDDEN_FILE,'r')
@@ -66,6 +68,7 @@ def process_request(client_sock, input_str):
         #Get PUT value argument
         put_string = str(input_lst[len(input_lst)-1])
         #check for resource in server. Replace if in server else create
+
         if os.path.isfile(resource):
             file = open(str(resource), 'w')
             file.write(put_string)
@@ -83,7 +86,7 @@ def process_request(client_sock, input_str):
 
     #POST request
     elif request[0] == 'POST':
-        #Get POST value argument
+        #Get PUT value argument
         post_string = str(input_lst[len(input_lst)-1])
         post_input = post_handeler(client_sock, post_string)
         file = open('form.html', 'w')
@@ -122,7 +125,8 @@ def process_request(client_sock, input_str):
     elif request[0] == 'DELETE':
         #check that resource is a file then checks for permissions. If both are true then delete file
         #then send response
-        if os.path.isfile(resource):
+        print('HERERERERERER:' + str(str(oct(os.stat(resource)[stat.ST_MODE] & (stat.S_IROTH & stat.S_IWOTH))) == '0o0') )
+        if os.path.isfile(resource) and str(oct(os.stat(os.getcwd())[stat.ST_MODE] & stat.S_IROTH & stat.S_IWOTH)) == '0o0':
             if str(oct(os.stat(resource)[stat.ST_MODE] & stat.S_IROTH)) != '0o0':
                 os.remove(resource)
                 now = datetime.now().isoformat()
@@ -158,7 +162,7 @@ def client_talk(client_sock, client_addr):
     print('talking to {}'.format(client_addr))
     data = client_sock.recv(BUFSIZE)
     response = process_request(client_sock, data.decode('utf-8'))
-    print('######This is the server response:#######\n{}'.format(response))
+    print('#####This is the server response:#####\n{}'.format(response))
     client_sock.send(bytes(response,'utf-8'))
     # clean up
     client_sock.shutdown(1)
@@ -202,5 +206,6 @@ def parse_args():
       exit(1)
 
 if __name__ == '__main__':
-  (host, port) = parse_args()
-  EchoServer(host, port)
+  print('HERERERERERER:' + str(os.stat('upload.html')[stat.ST_MODE]))
+ #(host, port) = parse_args()
+  #EchoServer(host, port)
