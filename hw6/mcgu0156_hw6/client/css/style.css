@@ -1,0 +1,7 @@
+h1, p, ul {
+    text-align: center !important;
+}
+
+#myFavTable.thead {
+	text-align: center;
+}
