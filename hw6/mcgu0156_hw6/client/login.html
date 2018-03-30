@@ -14,23 +14,19 @@
       <div class="jumbotron">
         <h1>Login Page</h1>
         <p>Please enter your user name and password. Both are case sensitive.</p>
-
-        <form action = "TODO:" method = "get">
-          Username: </br>
-          <input type = "text" name = "username" ><br>
-          Password:</br>
+        <form id = "password" action = "/validateLoginDetails" method = "post">
+          Username:
+          <input type = "text" name = "username" ><br></br>
+          Password:
           <input type = "password" name = "password"><br>
         </form>
-
         <br/>
         <br/>
-
       </div>
-
       <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10">
-          <button id= "myButton" type="button" class="btn btn-primary btn-block" onclick="location.href ='/favourites.html'">
+          <button id= "myButton" type="submit" form = "password" class="btn btn-primary btn-block" >
             Submit
           </button>
         </div>

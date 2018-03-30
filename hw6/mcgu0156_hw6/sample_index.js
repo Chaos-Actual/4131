@@ -52,7 +52,8 @@ app.get('/addPlace',function(req, res) {
 // GET method route for the login page.
 // It serves login.html present in client folder
 app.get('/login',function(req, res) {
-  // ADD DETAILS...
+  console.log('request Login');
+  res.sendFile(__dirname + '/client/login.html');
 });
 
 // GET method to return the list of favourite places
@@ -69,7 +70,9 @@ app.post('/postPlace', function(req, res) {
 // POST method to validate user login
 // upon successful login, user session is created
 app.post('/validateLoginDetails', function(req, res) {
-  // ADD DETAILS...
+  console.log('username' + req.body.username + 'password' + req.body.password);
+  validate(req.body.username, req.body.password);
+
 });
 
 // log out of the application
@@ -86,3 +89,29 @@ app.use('/client', express.static(__dirname + '/client'));
 app.get('*', function(req, res) {
   res.status(404).send('NOT FOUND!');
 });
+
+function validatePW(username, password){
+  var mysql = require("mysql");
+
+  var con = mysql.createConnection({
+    host: "cse-curly.cse.umn.edu",
+    user: "C4131S18U77", // replace with the database user provided to you
+    password: "82", // replace with the database password provided to you
+    database: "C4131S18U77", // replace with the database user provided to you
+    port: 3306
+  });
+  con.connect(function(err) {
+    if (err) {
+      throw err;
+    };
+    console.log("Connected!");
+    var sql = `CREATE * FROM tbl_places`;
+    con.query(sql, function(err, result) {
+      if(err) {
+        throw err;
+      }
+      console.log(result);
+    });
+  });
+
+}

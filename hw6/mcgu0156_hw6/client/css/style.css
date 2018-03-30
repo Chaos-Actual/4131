@@ -5,3 +5,6 @@ h1, p, ul {
 #myFavTable.thead {
 	text-align: center;
 }
+form {
+  text-align: center;
+}
