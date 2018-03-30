@@ -45,7 +45,8 @@ app.get('/favourites',function(req, res) {
 // GET method route for the addPlace page.
 // It serves addPlace.html present in client folder
 app.get('/addPlace',function(req, res) {
-	 // ADD DETAILS...
+  console.log('request addPlace');
+  res.sendFile(__dirname + '/client/addPlace.html');
 });
 
 // GET method route for the login page.
