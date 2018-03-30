@@ -105,12 +105,13 @@ function validatePW(username, password){
       throw err;
     };
     console.log("Connected!");
-    var sql = `CREATE * FROM tbl_places`;
+    var sql = `SELECT * FROM tbl_places`;
     con.query(sql, function(err, result) {
       if(err) {
         throw err;
       }
       console.log(result);
+      //TODO: IF RESULST THEN RETUEN VALUE OF SHA1
     });
   });
 

@@ -2,6 +2,8 @@
 
 var mysql = require("mysql");
 
+var sha1 = require('sha1');
+
 var con = mysql.createConnection({
   host: "cse-curly.cse.umn.edu",
   user: "C4131S18U77", // replace with the database user provided to you
@@ -15,9 +17,12 @@ con.connect(function(err) {
     throw err;
   };
   console.log("Connected!");
-  var sql = `INSERT INTO tbl_places(place_id, place_name, addr_line1 ,addr_line2, open_time, close_time, add_info, add_info_url)
-             VALUES (A , B, C,D, 10, 11, A, A)`;
-  con.query(sql, function(err, result) {
+
+  var sql = "INSERT INTO tbl_accounts(acc_id, acc_name, acc_login, acc_password) VALUES ?";
+  var VALUES = [
+    ['2', 'mark','NULL',sha1("tanks")]
+]
+  con.query(sql,[VALUES], function(err, result) {
     if(err) {
       throw err;
     }
