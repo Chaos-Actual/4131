@@ -38,6 +38,9 @@ app.listen(9007, () => console.log('Listening on port 9007!'));
 // // GET method route for the favourites page.
 // It serves favourites.html present in client folder
 app.get('/favourites',function(req, res) {
+  if (req.session.success === true) {
+    console.log('here');
+  }
 	console.log('request favourites');
   res.sendFile(__dirname + '/client/favourites.html');
 });
@@ -70,8 +73,14 @@ app.post('/postPlace', function(req, res) {
 // POST method to validate user login
 // upon successful login, user session is created
 app.post('/validateLoginDetails', function(req, res) {
-  console.log('username' + req.body.username + 'password' + req.body.password);
-  validate(req.body.username, req.body.password);
+  console.log('username' + req.body.User + 'password' + req.body.Password);
+  if (validatePW(req.body.User, req.body.Password) ) {
+    req.session.success = true;
+    res.sendFile(__dirname + '/client/favourites.html');
+  }
+  else{
+    // Username and Password are invalid
+  }
 
 });
 
@@ -79,6 +88,8 @@ app.post('/validateLoginDetails', function(req, res) {
 // destroy user session
 app.get('/logout', function(req, res) {
   // ADD DETAILS...
+  req.session.success = false;
+  res.sendFile(__dirname + '/client/login.html');
 });
 
 // middle ware to server static files
@@ -91,8 +102,9 @@ app.get('*', function(req, res) {
 });
 
 function validatePW(username, password){
+  return true;
   var mysql = require("mysql");
-
+  var sha1PW = sha1(password);
   var con = mysql.createConnection({
     host: "cse-curly.cse.umn.edu",
     user: "C4131S18U77", // replace with the database user provided to you
@@ -105,7 +117,8 @@ function validatePW(username, password){
       throw err;
     };
     console.log("Connected!");
-    var sql = `SELECT * FROM tbl_places`;
+    var sql = `SELECT acc_password FROM tbl_accounts WHERE acc_login =` +"'"+username+"'";
+    console.log(sql);
     con.query(sql, function(err, result) {
       if(err) {
         throw err;
