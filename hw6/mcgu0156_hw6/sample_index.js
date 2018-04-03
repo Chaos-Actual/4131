@@ -32,6 +32,8 @@ app.use(session({
   resave: false}
 ));
 
+var con;
+
 // server listens on port 9007 for incoming connections
 app.listen(9007, () => console.log('Listening on port 9007!'));
 
@@ -80,7 +82,22 @@ app.get('/getListOfFavPlaces', function(req, res) {
 
 // POST method to insert details of a new place to tbl_places table
 app.post('/postPlace', function(req, res) {
-  // ADD DETAILS...
+  var rowToBeInserted = { place_name: "'"+ req.body.place_name + "'",
+    addr_line1: "'"+ req.body.addr_line1 + "'",
+    addr_line2: "'"+ req.body.addr_line2 + "'",
+    open_time:  req.body.open_time,
+    close_time: req.body.close_time,
+    add_info: "'"+ req.body.add_info + "'",
+    add_info_url: "'"+ req.body.add_info_url + "'"
+  };
+
+  con.query('INSERT tbl_places SET ?', rowToBeInserted, function(err, result) {
+    if(err) {
+      throw err;
+    }
+    console.log("Value inserted");
+  });
+  res.redirect('/favourites');
 });
 
 // POST method to validate user login
@@ -88,7 +105,7 @@ app.post('/postPlace', function(req, res) {
 app.post('/validateLoginDetails', function(req, res) {
   var mysql = require("mysql");
   var sha1PW = sha1(req.body.Password);
-  var con = mysql.createConnection({
+  con = mysql.createConnection({
     host: "cse-curly.cse.umn.edu",
     user: "C4131S18U77", // replace with the database user provided to you
     password: "82", // replace with the database password provided to you
