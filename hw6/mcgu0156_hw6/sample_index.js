@@ -38,18 +38,31 @@ app.listen(9007, () => console.log('Listening on port 9007!'));
 // // GET method route for the favourites page.
 // It serves favourites.html present in client folder
 app.get('/favourites',function(req, res) {
-  if (req.session.success === true) {
-    console.log('here');
+  //Checking if session is valid
+  if (!req.session.success) {
+    console.log('no session');
+    res.redirect('/login');
   }
-	console.log('request favourites');
+  else if(req.session.success == true){
+	   console.log('request favourites');
   res.sendFile(__dirname + '/client/favourites.html');
+  }
 });
 
 // GET method route for the addPlace page.
 // It serves addPlace.html present in client folder
 app.get('/addPlace',function(req, res) {
   console.log('request addPlace');
+  //check session
+  if (!req.session.success) {
+    console.log('no session');
+    res.redirect('/login');
+  }
+  // If valid session then send addPlace html
+  else if(req.session.success == true){
+	   console.log('request favourites');
   res.sendFile(__dirname + '/client/addPlace.html');
+  }
 });
 
 // GET method route for the login page.
@@ -73,38 +86,8 @@ app.post('/postPlace', function(req, res) {
 // POST method to validate user login
 // upon successful login, user session is created
 app.post('/validateLoginDetails', function(req, res) {
-  console.log('username' + req.body.User + 'password' + req.body.Password);
-  if (validatePW(req.body.User, req.body.Password) ) {
-    req.session.success = true;
-    res.sendFile(__dirname + '/client/favourites.html');
-  }
-  else{
-    // Username and Password are invalid
-  }
-
-});
-
-// log out of the application
-// destroy user session
-app.get('/logout', function(req, res) {
-  // ADD DETAILS...
-  req.session.success = false;
-  res.sendFile(__dirname + '/client/login.html');
-});
-
-// middle ware to server static files
-app.use('/client', express.static(__dirname + '/client'));
-
-
-// function to return the 404 message and error to client
-app.get('*', function(req, res) {
-  res.status(404).send('NOT FOUND!');
-});
-
-function validatePW(username, password){
-  return true;
   var mysql = require("mysql");
-  var sha1PW = sha1(password);
+  var sha1PW = sha1(req.body.Password);
   var con = mysql.createConnection({
     host: "cse-curly.cse.umn.edu",
     user: "C4131S18U77", // replace with the database user provided to you
@@ -117,15 +100,46 @@ function validatePW(username, password){
       throw err;
     };
     console.log("Connected!");
-    var sql = `SELECT acc_password FROM tbl_accounts WHERE acc_login =` +"'"+username+"'";
-    console.log(sql);
-    con.query(sql, function(err, result) {
+    var sql = `SELECT acc_password FROM tbl_accounts WHERE acc_login =` +"'"+req.body.User+"'";
+  con.query(sql, function(err, result) {
       if(err) {
         throw err;
       }
-      console.log(result);
-      //TODO: IF RESULST THEN RETUEN VALUE OF SHA1
+      if(!result[0]){
+        //Check for account in DB
+        //TODO: send bad response
+        res.redirect('/login');
+      }
+      else{
+        //Check if passwords match
+        if(sha1PW == result[0].acc_password){
+          console.log('in if ' + sha1PW + '   ' + result[0].acc_password);
+          req.session.success = true;
+          res.redirect('/favourites');
+        }
+        else{
+          console.log('in else');
+          //TODO: send bad response
+          res.redirect('/login');
+        }
+      }
     });
   });
+});
 
-}
+// log out of the application
+// destroy user session
+app.get('/logout', function(req, res) {
+  // ADD DETAILS...
+  req.session.destroy();
+  res.sendFile(__dirname + '/client/login.html');
+});
+
+// middle ware to server static files
+app.use('/client', express.static(__dirname + '/client'));
+
+
+// function to return the 404 message and error to client
+app.get('*', function(req, res) {
+  res.status(404).send('NOT FOUND!');
+});
