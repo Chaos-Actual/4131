@@ -54,7 +54,6 @@ app.get('/favourites',function(req, res) {
 // GET method route for the addPlace page.
 // It serves addPlace.html present in client folder
 app.get('/addPlace',function(req, res) {
-  console.log('request addPlace');
   //check session
   if (!req.session.success) {
     console.log('no session');
@@ -62,7 +61,6 @@ app.get('/addPlace',function(req, res) {
   }
   // If valid session then send addPlace html
   else if(req.session.success == true){
-	   console.log('request favourites');
   res.sendFile(__dirname + '/client/addPlace.html');
   }
 });
@@ -70,27 +68,54 @@ app.get('/addPlace',function(req, res) {
 // GET method route for the login page.
 // It serves login.html present in client folder
 app.get('/login',function(req, res) {
-  console.log('request Login');
   res.sendFile(__dirname + '/client/login.html');
 });
 
 // GET method to return the list of favourite places
 // The function queries the table tbl_places for the list of places and sends the response back to client
 app.get('/getListOfFavPlaces', function(req, res) {
-  // ADD DETAILS...
+  console.log('in get list');
+  var returnHTML = '';
+  //Query tbl_place to get list of favourite places
+  var sql = 'SELECT * FROM tbl_places';
+  con.query(sql, function(err, result) {
+    if(err) {
+      throw err;
+    }
+    console.log(result.length);
+    for( var i = 0; i < result.length; i++ ){
+      returnHTML += '<tr>';
+      returnHTML += '<th>' + result[i].place_name + '</th>';
+      returnHTML += '<th>' + result[i].addr_line1 + result[i].addr_line2 +'</th>';
+      returnHTML += '<th>' + result[i].open_time +'/'+ result[i].close_time + '</th>';
+      returnHTML += '<th>' + result[i].add_info + '</th>';
+      if(result[i].add_info_url){
+        console.log('IN iff')
+          returnHTML += '<th> <a href = "' + result[i].add_info_url + '">'+ result[i].add_info_url + '</a></th>';
+      }
+      else {
+        console.log('in else');
+        returnHTML += '<th>' + result[i].add_info_url + '</th>';
+      }
+      returnHTML += '<tr>';
+    }
+    console.log(returnHTML);
+    res.send(returnHTML);
+  });
+
 });
 
 // POST method to insert details of a new place to tbl_places table
 app.post('/postPlace', function(req, res) {
-  var rowToBeInserted = { place_name: "'"+ req.body.place_name + "'",
-    addr_line1: "'"+ req.body.addr_line1 + "'",
-    addr_line2: "'"+ req.body.addr_line2 + "'",
+  var rowToBeInserted = { place_name: req.body.place_name ,
+    addr_line1:  req.body.addr_line1 ,
+    addr_line2: req.body.addr_line2 ,
     open_time:  req.body.open_time,
     close_time: req.body.close_time,
-    add_info: "'"+ req.body.add_info + "'",
-    add_info_url: "'"+ req.body.add_info_url + "'"
+    add_info: req.body.add_info ,
+    add_info_url: req.body.add_info_url
   };
-
+  // Take from input and insert it into tbl_places
   con.query('INSERT tbl_places SET ?', rowToBeInserted, function(err, result) {
     if(err) {
       throw err;
@@ -130,7 +155,6 @@ app.post('/validateLoginDetails', function(req, res) {
       else{
         //Check if passwords match
         if(sha1PW == result[0].acc_password){
-          console.log('in if ' + sha1PW + '   ' + result[0].acc_password);
           req.session.success = true;
           res.redirect('/favourites');
         }
