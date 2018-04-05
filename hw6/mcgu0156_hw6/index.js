@@ -74,7 +74,6 @@ app.get('/login',function(req, res) {
 // GET method to return the list of favourite places
 // The function queries the table tbl_places for the list of places and sends the response back to client
 app.get('/getListOfFavPlaces', function(req, res) {
-  console.log('in get list');
   var returnHTML = '';
   //Query tbl_place to get list of favourite places
   var sql = 'SELECT * FROM tbl_places';
@@ -82,7 +81,6 @@ app.get('/getListOfFavPlaces', function(req, res) {
     if(err) {
       throw err;
     }
-    console.log(result.length);
     for( var i = 0; i < result.length; i++ ){
       returnHTML += '<tr>';
       returnHTML += '<th>' + result[i].place_name + '</th>';
@@ -90,16 +88,13 @@ app.get('/getListOfFavPlaces', function(req, res) {
       returnHTML += '<th>' + result[i].open_time +'/'+ result[i].close_time + '</th>';
       returnHTML += '<th>' + result[i].add_info + '</th>';
       if(result[i].add_info_url){
-        console.log('IN iff')
           returnHTML += '<th> <a href = "' + result[i].add_info_url + '">'+ result[i].add_info_url + '</a></th>';
       }
       else {
-        console.log('in else');
         returnHTML += '<th>' + result[i].add_info_url + '</th>';
       }
       returnHTML += '<tr>';
     }
-    console.log(returnHTML);
     res.send(returnHTML);
   });
 
@@ -149,8 +144,7 @@ app.post('/validateLoginDetails', function(req, res) {
       }
       if(!result[0]){
         //Check for account in DB
-        //TODO: send bad response
-        res.redirect('/login');
+        res.sendFile(__dirname + '/client/login_badlogin.html');
       }
       else{
         //Check if passwords match
@@ -159,14 +153,14 @@ app.post('/validateLoginDetails', function(req, res) {
           res.redirect('/favourites');
         }
         else{
-          console.log('in else');
-          //TODO: send bad response
-          res.redirect('/login');
+          res.sendFile(__dirname + '/client/login_badlogin.html');
         }
       }
     });
   });
 });
+
+
 
 // log out of the application
 // destroy user session
