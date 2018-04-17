@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="client/css/style.css">
+    <title>Add Place</title>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav">
+            <li><a href="/favourites"><b>Favourite places</b></a></li>
+            <li><a href="/addPlace"><b>Add Place</b></a></li>
+            <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span></a>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container">
+
+    <div class="row">
+      <p><br/></p>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <div class="panel panel-default">
+          <form name = "addPlace" method = "post" action="/postPlace">
+            <p></p>
+            <table class="table table-bordered table-hover">
+            <tbody>
+
+              <tr>
+                  <td class="col-md-6">Place Name</td>
+                  <td class="col-md-6">
+                    <div class="form-group">
+                      <input type="text" class="form-control" name="place_name" required maxlength="15">
+                    </div>
+                  </td>
+              </tr>
+
+              <tr>
+                  <td class="col-md-6">Address Line 1</td>
+                  <td class="col-md-6">
+                    <div class="form-group">
+                     <input type="text" class="form-control" name="addr_line1" required maxlength="30">
+                    </div>
+                  </td>
+              </tr>
+
+              <tr>
+                  <td class="col-md-6">Address Line 2</td>
+                  <td class="col-md-6">
+                    <div class="form-group">
+                      <input type="text" class="form-control" name="addr_line2"  maxlength="30">
+                    </div>
+                  </td>
+              </tr>
+
+              <tr>
+                  <td class="col-md-6">Start Time</td>
+                  <td class="col-md-6">
+                    <div class="form-group">
+                      <input type="time" class="form-control" name="open_time" required>
+                    </div>
+                  </td>
+              </tr>
+
+              <tr>
+                  <td class="col-md-6">End Time</td>
+                  <td class="col-md-6">
+                    <div class="form-group">
+                      <input type="time" class="form-control" name="close_time" required>
+                    </div>
+                  </td>
+              </tr>
+
+              <tr>
+                  <td class="col-md-6">Additional Info Text</td>
+                  <td class="col-md-6">
+                    <div class="form-group">
+                      <input type="text" class="form-control" name="add_info" maxlength="30">
+                    </div>
+                  </td>
+              </tr>
+
+              <tr>
+                  <td class="col-md-6">Additional Info URL</td>
+                  <td class="col-md-6">
+                    <div class="form-group">
+                      <input type="url" class="form-control" name="add_info_url" maxlength="30">
+                    </div>
+                  </td>
+              </tr>
+
+
+              <tr>
+                <td class="col-md-6"></td>
+                <td class="col-md-6">
+                  <input type="submit" value="Submit">
+                </td>
+              </tr>
+
+            </tbody>
+            </table>
+          </form>
+        </div>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+  </div>
+  </body>
+</html>
