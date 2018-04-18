@@ -21,6 +21,9 @@ var sha1 = require('sha1');
 // include the mysql module
 var mysql = require("mysql");
 
+//include the xml2js module
+var xml2js = require("xml2js");
+
 // apply the body-parser middleware to all incoming requests
 app.use(bodyparser());
 
@@ -123,41 +126,48 @@ app.post('/postPlace', function(req, res) {
 // POST method to validate user login
 // upon successful login, user session is created
 app.post('/validateLoginDetails', function(req, res) {
+	
   var mysql = require("mysql");
   var sha1PW = sha1(req.body.Password);
-  con = mysql.createConnection({
-    host: "cse-curly.cse.umn.edu",
-    user: "C4131S18U77", // replace with the database user provided to you
-    password: "82", // replace with the database password provided to you
-    database: "C4131S18U77", // replace with the database user provided to you
-    port: 3306
-  });
-  con.connect(function(err) {
-    if (err) {
-      throw err;
-    };
-    console.log("Connected!");
-    var sql = `SELECT acc_password FROM tbl_accounts WHERE acc_login =` +"'"+req.body.User+"'";
-  con.query(sql, function(err, result) {
-      if(err) {
-        throw err;
-      }
-      if(!result[0]){
-        //Check for account in DB
-        res.sendFile(__dirname + '/client/login_badlogin.html');
-      }
-      else{
-        //Check if passwords match
-        if(sha1PW == result[0].acc_password){
-          req.session.success = true;
-          res.redirect('/favourites');
-        }
-        else{
-          res.sendFile(__dirname + '/client/login_badlogin.html');
-        }
-      }
-    });
-  });
+
+	fs.readFile(__dirname + '/dbconfig.xml',function(err, data){
+		dbInfo = xml2js.parseString(data, function(err,result){		
+			con = mysql.createConnection({
+				host: String(result.dbconfig.host),
+				user: String(result.dbconfig.user), // replace with the database user provided to you
+				password: String(result.dbconfig.password), // replace with the database password provided to you
+				database: String(result.dbconfig.database), // replace with the database user provided to you
+				port: Number(result.dbconfig.port)
+			});
+		});
+		con.connect(function(err) {
+		  if (err) {
+		    throw err;
+		  };
+		  console.log("Connected!");
+		  var sql = `SELECT acc_password FROM tbl_accounts WHERE acc_login =` +"'"+req.body.User+"'";
+		con.query(sql, function(err, result) {
+		    if(err) {
+		      throw err;
+		    }
+		    if(!result[0]){
+		      //Check for account in DB
+		      res.sendFile(__dirname + '/client/login_badlogin.html');
+		    }
+		    else{
+		      //Check if passwords match
+		      if(sha1PW == result[0].acc_password){
+		        req.session.success = true;
+						req.session.userName = req.body.User;
+		        res.redirect('/favourites');
+		      }
+		      else{
+		        res.sendFile(__dirname + '/client/login_badlogin.html');
+		      }
+		    }
+		  });
+		});
+	});
 });
 
 
