@@ -68,6 +68,19 @@ app.get('/addPlace',function(req, res) {
   }
 });
 
+//Get method route for admin page.
+app.get('/admin',function(req, res) {
+  //check session
+  if (!req.session.success) {
+    console.log('no session');
+    res.redirect('/login');
+  }
+  // If valid session then send addPlace html
+  else if(req.session.success == true){
+  res.sendFile(__dirname + '/client/admin.html');
+  }
+});
+
 // GET method route for the login page.
 // It serves login.html present in client folder
 app.get('/login',function(req, res) {
@@ -126,12 +139,12 @@ app.post('/postPlace', function(req, res) {
 // POST method to validate user login
 // upon successful login, user session is created
 app.post('/validateLoginDetails', function(req, res) {
-	
+
   var mysql = require("mysql");
   var sha1PW = sha1(req.body.Password);
 
 	fs.readFile(__dirname + '/dbconfig.xml',function(err, data){
-		dbInfo = xml2js.parseString(data, function(err,result){		
+		dbInfo = xml2js.parseString(data, function(err,result){
 			con = mysql.createConnection({
 				host: String(result.dbconfig.host),
 				user: String(result.dbconfig.user), // replace with the database user provided to you
@@ -168,6 +181,50 @@ app.post('/validateLoginDetails', function(req, res) {
 		  });
 		});
 	});
+});
+
+
+//function to get list of User for Admin Page
+app.get('/getAdminUsers', function(req, res) {
+  var returnHTML = '';
+  //Query tbl_place to get list of admin users
+  var sql = 'SELECT * FROM tbl_accounts';
+  con.query(sql, function(err, result) {
+    if(err) {
+      throw err;
+    }
+    for( var i = 0; i < result.length; i++ ){
+      returnHTML += '<tr>';
+      returnHTML += '<td>' + result[i].acc_id + '</td>';
+      returnHTML += '<td>' + result[i].acc_name + '</td>';
+      returnHTML += '<td>' + result[i].acc_login + '</td>';
+      returnHTML += '<td>' + '</td>';
+      returnHTML += '<td>' + '<a href="#"><span class="glyphicon glyphicon-pencil"></span></a> <a href="#"><span class="glyphicon glyphicon-trash"></span></a>'+'</td>';
+      returnHTML += '<tr>';
+    }
+    res.send(returnHTML);
+  });
+
+});
+
+//post function to add New user on admin page
+app.post('/addUser', function(req, res) {
+  var rowToBeInserted = { place_name: req.body.place_name ,
+    addr_line1:  req.body.addr_line1 ,
+    addr_line2: req.body.addr_line2 ,
+    open_time:  req.body.open_time,
+    close_time: req.body.close_time,
+    add_info: req.body.add_info ,
+    add_info_url: req.body.add_info_url
+  };
+  // Take from input and insert it into tbl_places
+  con.query('INSERT tbl_places SET ?', rowToBeInserted, function(err, result) {
+    if(err) {
+      throw err;
+    }
+    console.log("Value inserted");
+  });
+  res.redirect('/favourites');
 });
 
 
