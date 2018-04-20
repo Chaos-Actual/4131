@@ -170,6 +170,7 @@ app.post('/validateLoginDetails', function(req, res) {
 		    else{
 		      //Check if passwords match
 		      if(sha1PW == result[0].acc_password){
+
 		        req.session.success = true;
 						req.session.userName = req.body.User;
 		        res.redirect('/favourites');
@@ -199,7 +200,9 @@ app.get('/getAdminUsers', function(req, res) {
       returnHTML += '<td>' + result[i].acc_name + '</td>';
       returnHTML += '<td>' + result[i].acc_login + '</td>';
       returnHTML += '<td>' + '</td>';
-      returnHTML += '<td>' + '<a href="#"><span class="glyphicon glyphicon-pencil"></span></a> <a href="#"><span class="glyphicon glyphicon-trash"></span></a>'+'</td>';
+      returnHTML += '<td>' + '<span class="icon1"><button class = "tableButton" type = "submit" form ="userAdmin"><i class="glyphicon glyphicon-pencil"></i></button></span>';
+      returnHTML +=' <span  class="icon2"><button class = "tableButton" onClick ="javascript:clearUser();"><i class="glyphicon glyphicon-trash"></i></button></span>';
+      returnHTML +='</td>';
       returnHTML += '<tr>';
     }
     res.send(returnHTML);
@@ -207,27 +210,37 @@ app.get('/getAdminUsers', function(req, res) {
 
 });
 
-//post function to add New user on admin page
-app.post('/addUser', function(req, res) {
-  var rowToBeInserted = { place_name: req.body.place_name ,
-    addr_line1:  req.body.addr_line1 ,
-    addr_line2: req.body.addr_line2 ,
-    open_time:  req.body.open_time,
-    close_time: req.body.close_time,
-    add_info: req.body.add_info ,
-    add_info_url: req.body.add_info_url
-  };
-  // Take from input and insert it into tbl_places
-  con.query('INSERT tbl_places SET ?', rowToBeInserted, function(err, result) {
+
+//PostUser addes user to database
+app.post('/postUser', function(req,res){
+  var check = {acc_login: req.body.acc_login}
+  con.query(`SELECT * FROM tbl_accounts WHERE ?`,check, function(err, result) {
     if(err) {
       throw err;
     }
-    console.log("Value inserted");
+    if(result[0] == undefined){
+      var insert = [[req.body.acc_name,req.body.acc_login, sha1(req.body.acc_password)]];
+
+      con.query("INSERT INTO tbl_accounts(acc_name, acc_login, acc_password) VALUES ?",[insert], function(err, result) {
+        if(err) {
+          throw err;
+        }
+      });
+    }
+    else{
+      console.log("username exists");
+      //TODO NEED TO MAKE AN ALLERT
+    }//var sha1PW = sha1(req.body.acc_password);
   });
-  res.redirect('/favourites');
+  res.redirect('/admin');
 });
 
 
+
+//Returns Session userName
+app.get('/getSessionUser', function(req,res){
+  res.send(req.session.userName);
+});
 
 // log out of the application
 // destroy user session

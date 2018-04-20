@@ -12,3 +12,17 @@ form {
 #login{
   color: red;
 }
+
+.icon1 {
+ padding-right:50px;
+}
+
+.icon2 {
+  text-align: right;
+}
+
+.tableButton {
+  padding: 0;
+  border: none;
+  background: none;
+}

@@ -15,20 +15,11 @@ con.connect(function(err) {
     throw err;
   };
   console.log("Connected!");
-  var sql = `SELECT * FROM tbl_accounts`;
+  var sql = `SELECT * FROM tbl_places`;
   con.query(sql, function(err, result) {
     if(err) {
       throw err;
     }
     console.log(result);
-    console.log('id: ' + result[0].place_id + '\nplace_name: ' +result[0].place_name) ;
-  });
-  sql =  `SELECT * FROM tbl_places`;
-  con.query(sql, function(err, result) {
-    if(err) {
-      throw err;
-    }
-    console.log(result);
-    console.log('id: ' + result[0].place_id + '\nplace_name: ' +result[0].place_name) ;
   });
 });
