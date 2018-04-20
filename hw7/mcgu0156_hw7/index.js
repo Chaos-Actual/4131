@@ -213,6 +213,10 @@ app.get('/getAdminUsers', function(req, res) {
 
 //PostUser addes user to database
 app.post('/postUser', function(req,res){
+  if (!req.session.success) {
+    console.log('no session');
+    res.redirect('/login');
+  }
   var check = {acc_login: req.body.acc_login}
   con.query(`SELECT * FROM tbl_accounts WHERE ?`,check, function(err, result) {
     if(err) {
@@ -236,6 +240,10 @@ app.post('/postUser', function(req,res){
 });
 
 app.post('/deleteUser', function(req, res){
+  if (!req.session.success) {
+    console.log('no session');
+    res.redirect('/login');
+  }
   var check = {acc_login: req.body.acc_login}
   con.query("DELETE FROM tbl_accounts WHERE ?", check, function(err,result){
     if(err){
@@ -246,7 +254,40 @@ app.post('/deleteUser', function(req, res){
   res.send('success');
 });
 
+app.post('/updateUser', function(req,res){
+  if (!req.session.success) {
+    console.log('no session');
+    res.redirect('/login');
+  }
+  console.log(req);
+  var password = sha1(req.body.acc_password);
+  console.log(password);
+  var check = {acc_login: req.body.acc_login}
+  con.query(`SELECT * FROM tbl_accounts WHERE ?`,check, function(err, result) {
+    if(err) {
+      throw err;
+    }
+    if(result[0] == undefined){
+      var setValues = {acc_login: req.body.acc_login ,
+        acc_name: req.body.acc_name,
+        acc_password: password}
+      var whereValues = {
+        acc_id : req.body.acc_id
+      };
 
+      con.query("UPDATE tbl_accounts SET ? WHERE ? ",[setValues, whereValues], function(err, result) {
+        if(err) {
+          throw err;
+        }
+      });
+    }
+    else{
+      console.log("username exists");
+      //TODO NEED TO MAKE AN ALLERT
+    }//var sha1PW = sha1(req.body.acc_password);
+  });
+  res.redirect('/admin');
+});
 //Returns Session userName
 app.get('/getSessionUser', function(req,res){
   res.send(req.session.userName);
