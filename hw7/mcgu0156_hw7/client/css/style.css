@@ -26,3 +26,7 @@ form {
   border: none;
   background: none;
 }
+
+.password {
+  visibility: hidden;
+}

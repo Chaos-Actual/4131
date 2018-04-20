@@ -195,13 +195,13 @@ app.get('/getAdminUsers', function(req, res) {
       throw err;
     }
     for( var i = 0; i < result.length; i++ ){
-      returnHTML += '<tr>';
+      returnHTML += '<tr id = '+i+'>';
       returnHTML += '<td>' + result[i].acc_id + '</td>';
       returnHTML += '<td>' + result[i].acc_name + '</td>';
       returnHTML += '<td>' + result[i].acc_login + '</td>';
-      returnHTML += '<td>' + '</td>';
-      returnHTML += '<td>' + '<span class="icon1"><button class = "tableButton" type = "submit" form ="userAdmin"><i class="glyphicon glyphicon-pencil"></i></button></span>';
-      returnHTML +=' <span  class="icon2"><button class = "tableButton" onClick ="javascript:clearUser();"><i class="glyphicon glyphicon-trash"></i></button></span>';
+      returnHTML += '<td class = "password">'+ result[i].acc_password + '</td>';
+      returnHTML += '<td>' + '<span class="icon1"><button class = "tableButton" onclick = "javascript:editRow(\''+i+ '\');"><i class="glyphicon glyphicon-pencil"></i></button></span>';
+      returnHTML +='<span  class="icon2"><button class = "tableButton" onClick ="javascript:deleteUser(\''+result[i].acc_login + '\')"><i class="glyphicon glyphicon-trash"></i></button></span>';
       returnHTML +='</td>';
       returnHTML += '<tr>';
     }
@@ -235,6 +235,16 @@ app.post('/postUser', function(req,res){
   res.redirect('/admin');
 });
 
+app.post('/deleteUser', function(req, res){
+  var check = {acc_login: req.body.acc_login}
+  con.query("DELETE FROM tbl_accounts WHERE ?", check, function(err,result){
+    if(err){
+      throw err;
+    }
+  });
+  console.log('here');
+  res.send('success');
+});
 
 
 //Returns Session userName
