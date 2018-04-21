@@ -79,6 +79,8 @@ app.get('/admin',function(req, res) {
   else if(req.session.success == true){
   res.sendFile(__dirname + '/client/admin.html');
   }
+
+
 });
 
 // GET method route for the login page.
@@ -199,7 +201,7 @@ app.get('/getAdminUsers', function(req, res) {
       returnHTML += '<td>' + result[i].acc_id + '</td>';
       returnHTML += '<td>' + result[i].acc_name + '</td>';
       returnHTML += '<td>' + result[i].acc_login + '</td>';
-      returnHTML += '<td class = "password">'+ result[i].acc_password + '</td>';
+      returnHTML += '<td class = "password"></td>';
       returnHTML += '<td>' + '<span class="icon1"><button class = "tableButton" onclick = "javascript:editRow(\''+i+ '\');"><i class="glyphicon glyphicon-pencil"></i></button></span>';
       returnHTML +='<span  class="icon2"><button class = "tableButton" onClick ="javascript:deleteUser(\''+result[i].acc_login + '\')"><i class="glyphicon glyphicon-trash"></i></button></span>';
       returnHTML +='</td>';
@@ -259,33 +261,57 @@ app.post('/updateUser', function(req,res){
     console.log('no session');
     res.redirect('/login');
   }
-  console.log(req);
-  var password = sha1(req.body.acc_password);
-  console.log(password);
+  console.log(req.body);
   var check = {acc_login: req.body.acc_login}
   con.query(`SELECT * FROM tbl_accounts WHERE ?`,check, function(err, result) {
     if(err) {
       throw err;
     }
     if(result[0] == undefined){
-      var setValues = {acc_login: req.body.acc_login ,
-        acc_name: req.body.acc_name,
-        acc_password: password}
-      var whereValues = {
-        acc_id : req.body.acc_id
+      var sha1PW = sha1(String(req.body.acc_password));
+      console.log(sha1PW + String(req.body.acc_password) );
+      var update = {
+        acc_name: String(req.body.acc_name),
+        acc_login: String(req.body.acc_login),
+        acc_password: sha1PW
       };
+      var condition = {
+        acc_id: req.body.acc_id
+      }
 
-      con.query("UPDATE tbl_accounts SET ? WHERE ? ",[setValues, whereValues], function(err, result) {
+      con.query('UPDATE tbl_accounts SET ? WHERE ?', [update,condition], function(err, result) {
         if(err) {
           throw err;
         }
+        console.log("Value Updated");
       });
+
+    }
+    else if(result[0].acc_login != req.body.acc_login && result[0].acc_id == acc_id){
+      res.send('User is in database');
     }
     else{
-      console.log("username exists");
-      //TODO NEED TO MAKE AN ALLERT
-    }//var sha1PW = sha1(req.body.acc_password);
+      var sha1PW = sha1(String(req.body.acc_password));
+      console.log(sha1PW + String(req.body.acc_password) );
+      var update = {
+        acc_name: String(req.body.acc_name),
+        acc_login: String(req.body.acc_login),
+        acc_password: sha1PW
+      };
+      var condition = {
+        acc_id: req.body.acc_id
+      }
+
+      con.query('UPDATE tbl_accounts SET ? WHERE ?', [update,condition], function(err, result) {
+        if(err) {
+          throw err;
+        }
+        console.log("Value Updated");
+      });
+
+    }
   });
+
   res.redirect('/admin');
 });
 //Returns Session userName

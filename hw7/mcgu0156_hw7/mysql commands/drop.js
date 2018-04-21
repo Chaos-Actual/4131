@@ -13,7 +13,7 @@ con.connect(function(err) {
     throw err;
   };
   console.log("Connected!");
-  var sql = `SELECT * FROM tbl_places`;
+  var sql = `drop TABLE tbl_accounts`;
   con.query(sql, function(err, result) {
     if(err) {
       throw err;
