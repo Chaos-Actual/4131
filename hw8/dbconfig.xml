@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dbconfig>
+  <host>cse-curly.cse.umn.edu</host>
+  <user>C4131S18UXXX</user>
+  <password>XXX</password>
+  <database>C4131S18UXXX</database>
+  <port>3306</port>
+</dbconfig>
