@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <script type="text/javascript" src="client/js/addUser.js"></script>
+      <script type="text/javascript" src="client/js/navUser.js"></script>
+      <link rel="stylesheet" type="text/css" href="client/css/style.css">
+  </head>
+  <body>
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <ul class="nav navbar-nav">
+            <li><a href="/favourites"><b>Favourite places</b></a></li>
+            <li><a href="/addPlace"><b>Add Place</b></a></li>
+            <li><a href="/admin"><b>Admin</b></a></li>
+            <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span></a>
+          </ul>
+          <span class="navbar-text" id = "navUser">   </span>
+        </div>
+      </nav>
+
+      <div class="container">
+        <button type="button" onclick="addUser();"> <span class="glyphicon glyphicon-plus"></span> Add User</button>
+        <table class="table" id="adminTable">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Login</th>
+              <th scope="col">New Password</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr id ="form1" style ="display:none;">
+             <form id= "userAdmin" method = "post" action="/postUser">
+               <td></td>
+                 <td><input type="text" class="form-control" name="acc_name"  required maxlength="15"></td>
+                 <td><input type="text" class="form-control" name="acc_login" required maxlength="15"></td>
+                 <td><input type="text" class="form-control" name="acc_password" required maxlength="15"></td>
+                 <td><span class="icon1"><button class = "tableButton" type = "submit" form ="userAdmin"><i class="glyphicon glyphicon-floppy-disk"></i></button></span>
+                    <span  class="icon2"><button class = "tableButton" onClick ="javascript:clearUser();"><i class="glyphicon glyphicon-remove"></i></button></span>
+                 </td>
+           </form>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <script type="text/javascript" src="client/js/getAdminUsers.js"></script>
+  </body>
+</html>
