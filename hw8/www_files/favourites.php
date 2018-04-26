@@ -1,3 +1,8 @@
+<?php
+if(!isset($_SESSION)){
+  header('Location: /~mcgu0156/login.php');
+}
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -18,7 +23,7 @@
             <li><a href="/favourites"><b>Favourite places</b></a></li>
             <li><a href="/addPlace"><b>Add Place</b></a></li>
             <li><a href="/admin"><b>Admin</b></a></li>
-            <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span></a>
+            <li><a href="/logout.php"><span class="glyphicon glyphicon-log-out"></span></a>
           </ul>
           <span class="navbar-text" id = "navUser">   </span>
         </div>
@@ -41,3 +46,28 @@
       <script type="text/javascript" src="client/js/script.js"></script>
   </body>
 </html>
+<?php
+function populate_fav(){
+error_reporting(E_ALL);
+  ini_set( 'display_errors','1');
+  // $con = mysqli_connect('localhost','root','','phpDB','3306');
+  include_once 'database.php';
+  $con=new mysqli($db_servername, $db_username, $db_password, $db_name, (float)$db_port);
+  // Check connection
+  if (mysqli_connect_errno())
+    {
+    echo 'Failed to connect to MySQL:' . mysqli_connect_error();
+    }
+
+  //check login username and password is in database
+  $User = (string)$User;
+  $result = mysqli_query($con,"SELECT * FROM tbl_places ");
+  if (mysqli_num_rows($result) > 0){
+    $row = mysqli_fetch_assoc($result);
+  } else {
+    echo "Incorrect Username or Password!";
+  }
+  mysqli_close($con);
+}
+
+ ?>

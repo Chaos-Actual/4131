@@ -70,6 +70,10 @@ error_reporting(E_ALL);
       if(sha1($Password) == $row["acc_password"]){
         //TODO star session and redirect
         echo "GOOT!";
+         $_SESSION["user"] = $User;
+         session_start();
+         echo $_SESSION["user"];
+         header('Location: /~mcgu0156/favourites.php');
       }
       else{
         echo "Incorrect Username or Password!";
