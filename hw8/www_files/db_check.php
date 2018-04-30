@@ -1,8 +1,9 @@
 
 <?php
-// define variables and set to empty values
+// define variables and set to empty values\
+session_start();
 $User = $Password= "";
-
+echo "herer";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 $User = test_input($_POST["User"]);
 $Password = test_input($_POST["Password"]);
@@ -34,8 +35,10 @@ error_reporting(E_ALL);
   if (mysqli_num_rows($result) > 0){
     $row = mysqli_fetch_assoc($result);
       if(sha1($Password) == $row["acc_password"]){
-        //TODO star session and redirect
-        echo "GOOT!";
+
+	$_SESSION["User"] = $User;
+	echo $_SESSION["User"];
+	header('Location: /~mcgu0156/favourites.php');
       }
       else{
         echo "Incorrect Username or Password!";
